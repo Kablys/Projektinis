@@ -10,6 +10,7 @@
 \usepackage{url}
 
 
+
 % Titulinio aprašas
 \university{Vilniaus universitetas}
 \faculty{Matematikos ir informatikos fakultetas}
@@ -28,24 +29,23 @@
 \bibliography{bibliografija} 
 
 \begin{document}
+%My macros
+
+\newcommand{\LTandENG}[2]{#1 (angl. #2) }
 \maketitle
 
 \tableofcontents
 
 \sectionnonum{Sąvokų apibrėžimai}
-\texttt{Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu
-ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir
-kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).}
+%Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
 
 \sectionnonum{Įvadas}
-\texttt{Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai.
-Darbo įvadas neturi būti dėstymo santrauka. Įvado apimtis 1–2 puslapiai.
-taip ir anaip o gal ir kitaip}
+%Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai. Darbo įvadas neturi būti dėstymo santrauka. Įvado apimtis 1–2 puslapiai.\ taip ir anaip o gal ir kitaip}
 
-Šiais laikais kai kiekvienas žmogus turintis priėjimą prie interneto gali dalintis informacija, daugybė knygu yra skaitmenizuojamos kiekvieną dieną ir mokslo institucijos dalinasi savo moksline informacija, pasiekemos informacijos kiekis didėja su kiekviena diena ir pagrindinė problema nebėra informacijos trūkumas, o atradimas ko reikia. Tam spresti buvo ir yra kuriama ivairūs mechanizmai: paiškos varikliai... Šiame darbe autorius nagrinės viena iš šios problemos sprendimo metodų, klasterizacijos algoritmus ir jų panaudojimą textinems dokumentams. %Klasterizacijos algoritmai priklauso neprižiūrimo mokymosi \textbf{tipui} ir pagrinde naudojami.
+Šiais laikais kai kiekvienas žmogus turintis priėjimą prie interneto gali dalintis informacija, daugybė knygu yra skaitmenizuojamos kiekvieną dieną ir mokslo institucijos dalinasi savo moksline informacija, pasiekemos informacijos kiekis didėja su kiekviena diena ir pagrindinė problema nebėra informacijos trūkumas, o atradimas ko reikia. Tam spresti buvo ir yra kuriama ivairūs mechanizmai: paiškos varikliai\ldots Šiame darbe autorius nagrinės viena iš šios problemos sprendimo metodų, klasterizacijos algoritmus ir jų panaudojimą textinems dokumentams. %Klasterizacijos algoritmai priklauso neprižiūrimo mokymosi \textbf{tipui} ir pagrinde naudojami.
 Dokomentų klasterizacijos panaudojimai:
 \begin{itemize}
-	\item Automatinis dokumentų organizavimas. Dažnai alternatyvus šios problemos sprendimas yra dokumentų žymėjimas (angl. taging)
+	\item Automatinis dokumentų organizavimas. Dažnai alternatyvus šios problemos sprendimas yra dokumentų \LTandENG{žymėjimas}{taging}.
 	\item Temų \textbf{išgavimas}
 	\item Greitas informacijos paiška ir filtravimas, ypač
 \end{itemize}
@@ -58,7 +58,6 @@ Dokomentų klasterizacijos panaudojimai:
 	\item Rezultatų vizuoalizacija
 \end{enumerate}
 
-
 \section{Pagrindinė tiriamoji dalis}
 Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika;
 pagal atitinkamas darbo dalis, nuosekliai, panaudojant lyginamosios analizės,
@@ -67,25 +66,27 @@ išanalizuota medžiaga.
 
 \section{Duomenų išgavimas, apdorojimas ir pavertimas į patogia formą}
 Duomenų apdorojimas
-	Prieš naudojant bet kokį mašininio mokymosi metodą dažniausiai reika pradėti nuo duomenų apdorojimo. Šiuo atveju duomenys yra dokumentai kurie gali būti pateikti įvairiais formatais: moksliniai darbai Latex formatu, internetiniai puslapiai html fotmatu, … Dažniausiai šie formatai yra transliuojami i patogesnią apdorojimui formą. Taip pat dažnai susiduriant su žmogišku tekstu reikia ji paildomai apdoroti. Dažnai išemami stop words (nekaitomos kalbos dalys)(nebent atilekama frazių analizė) ir ženklai(!?...), žodžiai pakeičiami į bendrinię formą, kad supaprastini apdorojamą teksta neprarandant gilesnės teksto minties. 
+	Prieš naudojant bet kokį mašininio mokymosi metodą dažniausiai reika pradėti nuo duomenų apdorojimo. Šiuo atveju duomenys yra dokumentai kurie gali būti pateikti įvairiais formatais: moksliniai darbai Latex formatu, internetiniai puslapiai html fotmatu, … Dažniausiai šie formatai yra transliuojami i patogesnią apdorojimui formą. Taip pat dažnai susiduriant su žmogišku tekstu reikia ji paildomai apdoroti. Dažnai išemami stop words (nekaitomos kalbos dalys) (nebent atilekama frazių analizė) ir ženklai (!?\ldots), žodžiai pakeičiami į bendrinię formą, kad supaprastini apdorojamą teksta neprarandant gilesnės teksto minties. 
 \subsection{Duomenų išgavimas}
 Informacijos išgavimas iš interneto ir kitų šaltinių
-	XML atvėju \texttt{<tag>Content</tag>} tag galime interpretuoti kaip kintamajį .Galima interpretuoti kaip  kintamoji Content kaip kintamojo reikšmę, arba tag kaip teksto anotacija. Bet tai negalioja html atveju tagai Skirti nurodyti svetainės išdėstymą. Pavyzdžiui <h1> dažniausiai reiškia pavadinimą ar antrašnę ir XML atvėju turbūt būtu <title>. Taip pat Interneto svetainės turi  kitos tekstinės informacijos kaip navigacija, komentarai, kontaktai ir panašiai. Šia problema sprendžiam keliais žingsniais:
+	XML atvėju \texttt{<tag>Content</tag>} tag galime interpretuoti kaip kintamajį. Galima interpretuoti kaip  kintamoji Content kaip kintamojo reikšmę, arba tag kaip teksto anotacija. Bet tai negalioja html atveju tagai Skirti nurodyti svetainės išdėstymą. Pavyzdžiui <h1> dažniausiai reiškia pavadinimą ar antrašnę ir XML atvėju turbūt būtu <title>. Taip pat Interneto svetainės turi  kitos tekstinės informacijos kaip navigacija, komentarai, kontaktai ir panašiai. Šia problema sprendžiam keliais žingsniais:
 Pirma galime pasinaudoti tuo kad HTML yra DOM … todėl tai yra medžio struktūra. Supaprastinti darba galima apdorojant tik specifines šakas, bet tarp skirtingu svetainių šis medis atrodys skirtingai, taigi to pakaks tik dalinai
-Kurkas paprastesnis būdas pasinaudoti statisniu metodu(Finn’s method). Atskireme tagus į skirtus tekstui(<bold>, <italic>...) ir neskirtus(<head>, <body>...). Tada stebime tagų(neskirtu tekstui) pasiskirstyma puslapyje lyginat su tekstu, ten kur ju daug galime numanyti kad tai nera pagrindinis puslapio turinys ir vice versa. Tai pavaizdavus grafike pamatytume išsilyginima
+Kurkas paprastesnis būdas pasinaudoti statisniu metodu (Finn’s method). Atskireme tagus į skirtus tekstui (<bold>, <italic>\ldots) ir neskirtus (<head>, <body>\ldots). Tada stebime tagų (neskirtu tekstui) pasiskirstyma puslapyje lyginat su tekstu, ten kur ju daug galime numanyti kad tai nera pagrindinis puslapio turinys ir vice versa. Tai pavaizdavus grafike pamatytume išsilyginima
 
 \subsection{Duomenų apdorojimas}
-\subsubsection{Tokenization - teksto išskaldymas į reikšmingas dalis}
-Žodžius, frazes ir t.t. vadinamas token. Vėliau šie žodžiai bus naudojami kaip ideksai žodyne. Tekstų tokenizacija yra vis dar aktyviai tiriama sritis, ypač kalboms kuriose nėra aiškių žodžių ribų (\url{https://en.wikipedia.org/wiki/Scriptio_continua}). Taip pat problematiški žodžiai su ženkalais viduje: I.B.M.; pre-diabetes. Tokiais atvėjais netinka nei atskirti nei sujungti nes abejais atvėjais prarandama prasmė ir sukuremi netikslūs token’ai. Yra keli sprendimai: vienas padaryti abu (dalinti ir jungti) tokiu butu atsiranda daugiau triukšmo duomenyse, bet tai neturetu buti problema jeigu tvarkingi svoriai . 
+\subsubsection{Tokenization --- teksto išskaldymas į reikšmingas dalis}
+Žodžius, frazes ir t.t.\  vadinamas token. Vėliau šie žodžiai bus naudojami kaip ideksai žodyne. Tekstų tokenizacija yra vis dar aktyviai tiriama sritis, ypač kalboms kuriose nėra aiškių žodžių ribų (\url{https://en.wikipedia.org/wiki/Scriptio_continua}). Taip pat problematiški žodžiai su ženkalais viduje: I.B.M.\; pre-diabetes. Tokiais atvėjais netinka nei atskirti nei sujungti nes abejais atvėjais prarandama prasmė ir sukuremi netikslūs token’ai. Yra keli sprendimai: vienas padaryti abu (dalinti ir jungti) tokiu butu atsiranda daugiau triukšmo duomenyse, bet tai neturetu buti problema jeigu tvarkingi svoriai. 
 Morfologinė variacija. Problema su žodžiais kur viena šaknis gali turėti kelias skirtingas prasmes. Arabų kalba ypač sudėtinga šituo atžvilgiu nes turi palygint mažai šaknų, bet labai daug variacijų. Pokyčiai gali būti prieš, po ir pačioje šaknyje.
 
-\subsubsection{Stemming - žodžio šaknies išgavimas.}
+\subsubsection{Stemming --- žodžio šaknies išgavimas.}
 (https://en.wikipedia.org/wiki/Stemming). Dažnai programos (stemmers) gražina ne žodžius o šaknis. Egzistuoja keli implementacijos būdai: Paremti taisyklėmis, taisykles + išimčių žodynas. Šie veikia neblogai bet reikalauja labai gero kalbos pažinimo ir yra labai komplikuoti. Kitas būdas raidžių n-gramos, panašiuose žodžiuose panašios n-gramos. Standartiškai Europinėms kalboms n = 4. Stemming’as gali ivykti skirtinguose apdorojimo etapuose priklausomai nuo užduoties.
-Stop-words išėmimas. Tokie žodžiai kaip of, the, to turi palyginti mažai reikšmės, nenaudingi bandant diskriminuoti, pagrinde yra teksto “klyjai”. You vertinga išmesti nes sunaudoja daug resursų, pvz. “of” + “the” = sudaro 10\% kalbos. Todėl dažniausiai naudojami Stop-word žodynai. Reikia atkreipti dėmėsį, kad skirtingose srityse turi skirtingus stop-word(pvz internete žodis “click”). Taip pat kai kurios frazės gali būti sudarytos iš stop-word ir turėti prasmę (“to be or not to be”).
+Stop-words išėmimas. Tokie žodžiai kaip of, the, to turi palyginti mažai reikšmės, nenaudingi bandant diskriminuoti, pagrinde yra teksto “klyjai”. You vertinga išmesti nes sunaudoja daug resursų, pvz.\ “of” + “the” = sudaro 10\% kalbos. Todėl dažniausiai naudojami Stop-word žodynai. Reikia atkreipti dėmėsį, kad skirtingose srityse turi skirtingus stop-word (pvz internete žodis “click”). Taip pat kai kurios frazės gali būti sudarytos iš stop-word ir turėti prasmę (“to be or not to be”).
+
 \subsubsection{Sinonimiškumas ir Polisemija}
-Indexų pavyzdžiai: Wordnet, MeSH. Taip pat yra daug statistinių metodų. Kartais prašoma vartotojų Prašoma nurodyti kurią iš sinonimo reikšmių jie turėjo omeny arba vertinti paieškos rezultatus nurodant kurie atitinka o kurie ne, tokiu butu paieškos problema paversti į supervised learning problemą (relevance feedback).
+Indexų pavyzdžiai: Wordnet, MeSH, taip pat yra daug statistinių metodų. Kartais prašoma vartotojų Prašoma nurodyti kurią iš sinonimo reikšmių jie turėjo omeny arba vertinti paieškos rezultatus nurodant kurie atitinka o kurie ne, tokiu butu paieškos problema paversti į supervised learning problemą (relevance feedback).
+
 \subsection{Pavertimas į patogia formą}
-4. Computing term frequencies or tf-idf//
+4. Computing term frequencies or tf-idf
 After pre-processing the text data, we can then proceed to generate features. For document clustering, one of the most common ways to generate features for a document is to calculate the term frequencies of all its tokens. Although not perfect, these frequencies can usually provide some clues about the topic of the document. And sometimes it is also useful to weight the term frequencies by the inverse document frequencies. See tf-idf for detailed discussions.
 
 \section{Algoritmai}
@@ -99,45 +100,44 @@ Klasterizacijos algoritmai gali padėti atsakyti į klausimus:
 \end{itemize}
 Klasteringo algoritmai skirstomi į šiuos tipus:
 \begin{itemize}
-	\item monothetic – visi populiacijos nariai turi kažkokia bendrą savybę(vyrai nuo 20 iki 25 metų amžiaus)
-\\polythetic – nariai yra panšūs, bet neturi konkrečios bendros savybės (kai atstumas tarp narių nurodo priklausomybę grupei)
-	\item Hard(kieti) klasteriai – kai grupės neturi bendrų narių. Kartais gali atsirasti atėjai kai elementas “matematiškai” gali priklausyti ne vienai grupei, bet toks atvėjis yra retas.
-\\Soft(minkštas)klasteriai – kai grupės gali turėti bendrų narių. Tokiu atveju galime nagrinėti kaip konkretus elementas priklauso skirtingoms grupėms ir kaip gerai jas atitinka.
-	\item flat (plokščia) – kai elementai suskirstomi į grupes, kurios viena kitai yra lygios.
-\\Hierarchical(herarkiškas)(taxonomy) – Kai grupė gali būti sudaryta iš kelių “konkretesnių” grupių. Pvz. retryveris -> šuo -> žinduolis -> gyvūnas
+	\item monothetic – visi populiacijos nariai turi kažkokia bendrą savybę (vyrai nuo 20 iki 25 metų amžiaus)
+		\\polythetic – nariai yra panšūs, bet neturi konkrečios bendros savybės (kai atstumas tarp narių nurodo priklausomybę grupei)
+	\item \LTandENG{kieti}{hard} klasteriai – kai grupės neturi bendrų narių. Kartais gali atsirasti atėjai kai elementas “matematiškai” gali priklausyti ne vienai grupei, bet toks atvėjis yra retas.
+		\\\LTandENG{minkšti}{soft} klasteriai – kai grupės gali turėti bendrų narių. Tokiu atveju galime nagrinėti kaip konkretus elementas priklauso skirtingoms grupėms ir kaip gerai jas atitinka.
+	\item \LTandENG{plokšti}{flat} – kai elementai suskirstomi į grupes, kurios viena kitai yra lygios.
+		\\\LTandENG{herarkiški}{hierarchical}Hierarchical (herarkiškas) (taxonomy) – Kai grupė gali būti sudaryta iš kelių “konkretesnių” grupių. Pvz.\ retryveris $\,\to\,$ šuo $\,\to\,$ žinduolis $\,\to\,$ gyvūnas
 \end{itemize}
-	\subsection{K-means}
+
+\subsection{K-means}
 Šis algoritmas suskirsto duomenis į $ k $ klasterių.
-	\[ \underset{\mathbf{S}} {\operatorname{arg\,min}}  \sum_{i=1}^{k} \sum_{\mathbf x \in S_i} \left\| \mathbf x - \boldsymbol\mu_i \right\|^2 \]
-	Praktikoje dažniausiai naudojamas
-	Duodama $n$ vektroių(su $d$ dimensijų) ir numeris $k$.
+\[ \underset{\mathbf{S}} {\operatorname{\arg,\min}}  \sum_{i=1}^{k} \sum_{\mathbf x \in S_i} \left\| \mathbf x - \boldsymbol\mu_i \right\|^2 \]
+Praktikoje dažniausiai naudojamas duodama $n$ vektroių (su $d$ dimensijų) ir numeris $k$.
 Sustatome $k$ centroidų $c$ į atsitiktines vietas.
 \begin{enumerate}
-\item Kiekvienam taskui(vektoriui) randame artimiausia c
-\item Kiekviena centroida pakeiti taip kad jis geriau atitiktu jam priskirtą klusterį(sumažinti atstuma iki visų taškų arba kitaip tariant rasti taškų centrą). Tada eini i žingsni  1. tol kol visi klusteriai išlieka vienodi.
+\item Kiekvienam taskui (vektoriui) randame artimiausia c
+\item Kiekviena centroida pakeiti taip kad jis geriau atitiktu jam priskirtą klusterį (sumažinti atstuma iki visų taškų arba kitaip tariant rasti taškų centrą). Tada eini i žingsni  1.\ %TODO add proper reference
+	tol kol visi klusteriai išlieka vienodi.
 \end{enumerate}
-Big O (iteracijos*K*n*d)
-Produce hard, flat, polythetic cluster. 
+Big O ($iteracijos*K*n*d$) produce hard, flat, polythetic cluster. 
 
 %\subsection{mixture models}
 \subsection{Hierarchical clustering}
-Šis metodas neskirsto dokumentu į konkrečias grupes(nors vėliau parodysim kad gali), bet vietoj to suskirsto dokuemntus į herarhicja. Tam atlikti reikiai būdo kaip matuoti dokumentų panašumą. 
+Šis metodas neskirsto dokumentu į konkrečias grupes (nors vėliau parodysim kad gali), bet vietoj to suskirsto dokuemntus į herarhicja. Tam atlikti reikiai būdo kaip matuoti dokumentų panašumą. 
+
 \subsection{Latent Dirichlet allocation}
-	Latent Dirichlet allocation(toliau LDA, nesumaišyti su Linear discriminant analysis, kas yra kitas mašininio mokymosi metodas). Yra kurkas sudetingesnis dokumentu analizavimo metodas. Kartais priskiremas atskirai algoritmu klasei Topic modeling, kuri bando ne grupuoti duomenis o suteigti jiems temas. Palyginant su praeitais metodais dokumentai turėjo priklausyti vienai iš klasterių ar jų herarkijai, bet dokumentas gali turėti kelias temas. 
+Latent Dirichlet allocation (toliau LDA, nesumaišyti su Linear discriminant analysis, kas yra kitas mašininio mokymosi metodas). Yra kurkas sudetingesnis dokumentu analizavimo metodas. Kartais priskiremas atskirai algoritmu klasei Topic modeling, kuri bando ne grupuoti duomenis o suteigti jiems temas. Palyginant su praeitais metodais dokumentai turėjo priklausyti vienai iš klasterių ar jų herarkijai, bet dokumentas gali turėti kelias temas. 
 % Reikia perkelti ir tiksliau apibrėžti ką būtent gražina.	
 Todėl LDA gražina ne sugrupuotus duomenis, o pasiskirstymą kiek kokių temų turi kiekvienas dokumentas  
+
 \section{Algoritmų testavimas}
-Viena iš fundamentalių neprižiūrimo mokymosi problemų yra modelių testavimas. Skirtingai nei "prižurimame mokymasi" kur svarbu atdidėti dali duomenų su kuriais nėra mokomasi o tik testuojama sugeneruoti modeliai, "neprižiurimame mokymasi" mes to nelgalim atlikti..... Bet egzsituoja keltatas metodu kaip galima patikrinti sudarytus klasterius.
+Viena iš fundamentalių neprižiūrimo mokymosi problemų yra modelių testavimas. Skirtingai nei „prižurimame mokymasi“ kur svarbu atdidėti dali duomenų su kuriais nėra mokomasi o tik testuojama sugeneruoti modeliai, “neprižiurimame mokymasi“ mes to nelgalim atlikti\ldots Bet egzsituoja keltatas metodu kaip galima patikrinti sudarytus klasterius.
 \begin{itemize}
 	\item Pirma galima sugeneruotus klasterius leisti tikrinti \textbf{žmonėms }. Tam yra keli būdai. Galima tiesiog duoti sugeneruotus klasterius ir bandyti nuspresti ar jie tinkami. Taipat galima parainkti du atsitiktinius dokumentus ir spėti ar jie turėtu būti viename ar atskiruose klasteriuose, ir tada palyginti su kompiuterio sugeneruotu rezultatu. 
 	\item Taip yra metodų kaip atlikti testavimą automatiškai. Vienas jų paimti 2(ar daugiau) dokumentus iš skirtingų klasterių ir apkeisti juos vietomis, tada patikrinti klasteriu //stipruma. Tai atlike dokybe kartų galime spręsti kaip sėkmingai sekėsi klasterizacija, jeigu apmainant jų kokybė nukrito tai reikškia, kad dokumentai sėkmingai suklaserizuoti, bet jeigu nesikeite tai reiške, kad klasteriai mažai vienas nuo kito skiresi ir klasreizacija nesekminga.
 \end{itemize}
-Testuojame ilga teksta Testuojame ilga tekstaame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga 
-enteris ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga
 
-Dvigubas enterisame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga ame ilga teksta Testuojame ilga 
 \section{Rezultatų vizuoalizacija}
-Dažnai norėdami geriau pažinti (ar testuoti) klasterizacijos rezultatus mes galime juo vizuolizuoti. Vizulaizacijos gali buti įvairios ir dažnai priklauso nuo algoritmo rūšies, bet dažniausiai naudojama \textbf{point cloud} vizualizacijos. Jose matosi pagal kokius parameturs(ašis) buvo klasterizuojama ir kaip atrodo sudaryti klasteriai.Taip pat galima pridėti papildomų indikatorių, priklausomų nuo algoritmo. Pavyzdžiui klasteriams sudarytiems k-means metodu galima nubraižyti atitinkamus "centrinius taškus".
+Dažnai norėdami geriau pažinti (ar testuoti) klasterizacijos rezultatus mes galime juo vizuolizuoti. Vizulaizacijos gali buti įvairios ir dažnai priklauso nuo algoritmo rūšies, bet dažniausiai naudojama \textbf{point cloud} vizualizacijos. Jose matosi pagal kokius parameturs (ašis) buvo klasterizuojama ir kaip atrodo sudaryti klasteriai.Taip pat galima pridėti papildomų indikatorių, priklausomų nuo algoritmo. Pavyzdžiui klasteriams sudarytiems k-means metodu galima nubraižyti atitinkamus „centrinius taškusn“.
 
 \sectionnonum{Išvados}
 Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
@@ -155,29 +155,5 @@ suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 % parengta, medžiaga. Savarankiški priedai gali būti pateikiami kompiuterio
 % diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
 % Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
-
-\section{Niauroninio tinklo struktūra}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{img/MLP}
-    \caption{Paveikslėlio pavyzdys}   % Antraštė įterpiama po paveikslėlio
-    \label{img:mlp}
-\end{figure}
-
-
-\section{Eksperimentinio palyginimo rezultatai}
-% tablesgenerator.com - converts calculators (e.g. excel) tables to LaTeX
-\begin{table}[H]\footnotesize
-  \centering
-  \caption{Lentelės pavyzdys}    % Antraštė įterpiama prieš lentelę
-  {\begin{tabular}{|l|c|c|} \hline
-    Algoritmas & $\bar{x}$ & $\sigma^{2}$ \\
-    \hline
-    Algoritmas A  & 1.6335    & 0.5584       \\
-    Algoritmas B  & 1.7395    & 0.5647       \\
-    \hline
-  \end{tabular}}
-  \label{tab:table example}
-\end{table}
 
 \end{document}
