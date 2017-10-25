@@ -1,19 +1,28 @@
-\documentclass{VUMIFInfKursinis}
-\usepackage{algorithmicx}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{amsfonts}
+\documentclass[draft]{VUMIFInfKursinis}
+%\usepackage{algorithmicx}
+%\usepackage{algorithm}
+%\usepackage{algpseudocode}
+%\usepackage{amsfonts}
 \usepackage{amsmath}
-\usepackage{bm}
-\usepackage{color}
+%\usepackage{bm}
+%\usepackage{color}
 \usepackage{hyperref}  % Nuorodų aktyvavimas
-\usepackage{url}
+%\usepackage{url}
 
 %My personal additions
-\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes} 
-\usepackage{booktabs} 
+\iffalse{}
+	%\usepackage{xargs}
+	\usepackage[rgb,dvipsnames]{xcolor}
+	\usepackage[colorinlistoftodos,prependcaption,textsize=footnotesize,disable]{todonotes} 
+	\usepackage{booktabs}
 
+	\addtolength{\oddsidemargin}{3cm}
+	\addtolength{\evensidemargin}{3cm}
+	\addtolength{\textwidth}{-3cm}
 
+	\reversemarginpar{}
+	\setlength{\marginparwidth}{5.5cm} 
+\fi
 
 % Titulinio aprašas
 \university{Vilniaus universitetas}
@@ -35,9 +44,21 @@
 \begin{document}
 %My macros
 
-\newcommand{\LTandENG}[2]{#1 (angl. \textit{#2}) }
+\newcommand{\ltang}[2]{#1 (angl.\  \textit{#2}) }
 \newcommand{\BigO}[1]{$\mathcal{O}(#1)$}
-\listoftodos[Notes]
+
+\iffalse{}
+	\newcommand{\rewrite}[2]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+	\newcommand{\needsource}[1]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,]{#1}}
+	\newcommand{\toadd}[1]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,]{#1}}
+	\newcommand{\note}[2]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum]{#1}}
+	\newcommand{\thiswillnotshow}[2]{\todo[disable,#1]{#2}}
+
+	\listoftodos[Notes]
+\fi
+\newcommand{\toadd}[1]{#1}
+\newcommand{\note}[1]{#1}
+\newcommand{\needsource}[1]{#1}
 
 \maketitle
 
@@ -49,15 +70,28 @@
 \sectionnonum{Įvadas}
 %Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai. Darbo įvadas neturi būti dėstymo santrauka. Įvado apimtis 1–2 puslapiai.
 Šiais laikais kai kiekvienas žmogus turintis priėjimą prie interneto gali dalintis informacija, daugybė knygu yra skaitmenizuojamos kiekvieną dieną ir mokslo institucijos dalinasi savo moksline informacija, pasiekemos informacijos kiekis didėja su kiekviena diena ir pagrindinė problema nebėra informacijos trūkumas, o atradimas ko reikia. Tam spresti buvo ir yra kuriama ivairūs mechanizmai: paiškos varikliai\ldots Šiame darbe autorius nagrinės viena iš šios problemos sprendimo metodų, klasterizacijos algoritmus ir jų panaudojimą textinems dokumentams. %Klasterizacijos algoritmai priklauso neprižiūrimo mokymosi \textbf{tipui} ir pagrinde naudojami.
+
+Šiandieninėje visuomenėje prieinamos informacijos kiekis didėja su kiekviena diena ir pagrindinė problema yra ne informacijos trūkumas, o jos gausa ir galimybė surasti reikiamą informaciją. Paieškos programos gali pateikti didelius kiekius tekstinių dokumentų, bet reikiamo dokumento paieška užima daug laiko ir be to, ne visada gauta informacija atitinka paiešką. Tekstinių dokumentų paieškos procesui palengvinti ir pagreitinti gali būti taikomi klasterizavimo metodai, kurie yra pakankamai gerai žinomi ir jau seniai naudojami duomenų klasterizavimui.  Klasterizavimo metu  dokumentai pagal savo turinį suskirstomi į klasterius vadovaujantis tam tikrais kriterijais, pvz., pagal temą, pagal dokumento naujumą ir pan. 
+Darbo tikslas – mokslinės literatūros apie dokumentų klasterizavimą apžvalga ir analizė  
+
+Darbo uždaviniai: 
+\begin{enumerate}
+	\item Dokumentų klasterizavimui naudojamų įrankių ir metodų apžvalga.
+	\item Dokumentų klasterizavimo žingsnių aprašymas
+	\item 
+\end{enumerate}
+
+Kursiniame darbe buvo siekta susipažinti su moksline literatūra, išanalizuoti egzistuojančius dokumentų klasterizavimo metodus ir įrankius, kurie bus išbandyti taikomojo pobūdžio  kursiniame darbe apie lietuviškų dokumentų klasterizavimą.
+
 Dokomentų klasterizacijos panaudojimai:
 \begin{itemize}
-	\item Automatinis dokumentų organizavimas. Dažnai alternatyvus šios problemos sprendimas yra dokumentų \LTandENG{žymėjimas}{taging}.
+	\item Automatinis dokumentų organizavimas. Dažnai alternatyvus šios problemos sprendimas yra dokumentų \ltang{žymėjimas}{taging}.
 	\item Temų \textbf{išgavimas}
 	\item Greitas informacijos paiška ir filtravimas, ypač
 \end{itemize}
 Šiame darbe taip pat bus paminėtos kitos su dokumentu klasterizacija susijusios problemos ir ši informacija bus išdėstyta eilės tvarka kaip būtu sprendžiamos užduotys.
 \begin{enumerate}
-	\item Duomenų išgavimas iš skirtingų medijų
+	\item Duomenų išgavimas iš skirtingų tekstinių dokumentų formatų
 	\item Duomenų apdorojimas
 	\item Algoritmai
 	\item Algoritmų testavimas
@@ -65,30 +99,36 @@ Dokomentų klasterizacijos panaudojimai:
 \end{enumerate}
 
 
+
 \section{Pagrindinė tiriamoji dalis}
 %Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika; pagal atitinkamas darbo dalis, nuosekliai, panaudojant lyginamosios analizės, klasifikacijos, sisteminimo metodus bei apibendrinimus, dėstoma sukaupta ir išanalizuota medžiaga.
 
 
+
 \section{Duomenų išgavimas, apdorojimas ir pavertimas į patogia formą}
-	Jeigu dirbame su iš anksto neparuoštu \LTandENG{duomenų rinkiniu}{data set}, reika pradėti nuo duomenų apdorojimo\cite{kadhim2014text}. Šiuo atveju duomenys yra dokumentai kurie gali būti pateikti įvairiais formatais: moksliniai darbai Latex formatu, internetiniai puslapiai html fotmatu, elektroninės kngyos \ldots Šiuos dokumentus reikia transliuoti į patogesnią analizei formą. Taip pat dažnai susiduriant su žmogišku tekstu reikia ji paildomai apdoroti. Dažnai išemami stop words (nekaitomos kalbos dalys) (nebent atilekama frazių analizė) ir ženklai (!?\ldots), žodžiai pakeičiami į bendrinię formą, kad supaprastini apdorojamą teksta neprarandant gilesnės teksto minties. 
+	Jeigu dirbame su iš anksto neparuoštu \ltang{duomenų rinkiniu}{data set}, reika pradėti nuo duomenų apdorojimo\cite{kadhim2014text}. Šiuo atveju duomenys yra dokumentai kurie gali būti pateikti įvairiais formatais: moksliniai darbai Latex formatu, internetiniai puslapiai html fotmatu, elektroninės kngyos \ldots Šiuos dokumentus reikia transliuoti į patogesnią analizei formą. Taip pat dažnai susiduriant su žmogišku tekstu reikia ji paildomai apdoroti. Dažnai išemami stop words (nekaitomos kalbos dalys) (nebent atilekama frazių analizė) ir ženklai (!?\ldots), žodžiai pakeičiami į bendrinię formą, kad supaprastini apdorojamą teksta neprarandant gilesnės teksto minties. 
 
 \subsection{Duomenų išgavimas}
+\needsource{cite specifications and add more details about scraping}
 Informacijos išgavimas iš interneto ir kitų šaltinių
 \subsubsection{XML/HTML dokumentai}
 XML atvėju \texttt{<tag>Content</tag>} tag galime interpretuoti kaip kintamajį. Galima interpretuoti kaip  kintamoji Content kaip kintamojo reikšmę, arba tag kaip teksto anotacija. Bet tai negalioja html atveju tagai Skirti nurodyti svetainės išdėstymą. Pavyzdžiui <h1> dažniausiai reiškia pavadinimą ar antrašnę ir XML atvėju turbūt būtu <title>. Taip pat Interneto svetainės turi  kitos tekstinės informacijos kaip navigacija, komentarai, kontaktai ir panašiai. Šia problema sprendžiam keliais žingsniais:
 Pirma galime pasinaudoti tuo kad HTML yra DOM … todėl tai yra medžio struktūra. Supaprastinti darba galima apdorojant tik specifines šakas, bet tarp skirtingu svetainių šis medis atrodys skirtingai, taigi to pakaks tik dalinai
 Kurkas paprastesnis būdas pasinaudoti statisniu metodu (Finn’s method). Atskireme tagus į skirtus tekstui (<bold>, <italic>\ldots) ir neskirtus (<head>, <body>\ldots). Tada stebime tagų (neskirtu tekstui) pasiskirstyma puslapyje lyginat su tekstu, ten kur ju daug galime numanyti kad tai nera pagrindinis puslapio turinys ir vice versa. Tai pavaizdavus grafike pamatytume išsilyginima
 \subsubsection{PDF}
-\LTandENG{PDF}{Portable Document Format} Dokumentų formatas skirtas lengvam dokumentų dalinimuisi tarp skirtingų sistemų. Nors PDF yra sudėtingas ir suspaustas formatas, bet palygint lengvai galima išgauti textinę informaciją.%\todonotes{Detalesnis aprasymas ir budai išgauti tekstą}
+\ltang{PDF}{Portable Document Format} Dokumentų formatas skirtas lengvam dokumentų dalinimuisi tarp skirtingų sistemų. PDF yra kurkas sudėtingesnis formatas ir dėl to duomenų išgavimas tampa painesnis. PDF dokumentai išdėstymui ir grafikai naudoja PostScript formatavimo kalbą, taip pat savyje išsaugo reikalingus šriftus ir turi struktūrinę sistemą kuri išsaukgo visus šiuos duomenis į vieną failą ir kur tinkama panaudoja duomenų suspaudimą.\toadd{Detalesnis aprasymas ir budai išgauti tekstą}
+Dažnai internete galime sutikti knygų variantus kurie buvo tiesiai nuskenuoti ir idėti pdf dokumentą kaip paveikslėliai. Norint iš tokio dokumento išgauti tekstą reiktų panaudoti {Teksto atpažinimas}{OCR (optical character recognition)}
 \subsubsection{Tex}
 Tex yra dokumentų maketavimo kalba ypač dažnai naudojama matematikos, fizikos ir kommpiuterių mokslo srityse. Dali moksliniu darbų ir knygų galima prieti netik PDF bet ir autorių rašta Latex versija.
 \subsubsection{Elektroninių knygų formatai}
 \begin{itemize}
 	\item ePub
+		XML pagrindu paremtas, atviras formatas
 	\item MOBI
-	\item AZW
-\end{itemize}
 
+	\item AZW3
+		Formatas paremtas daline HTML5 ir CSS3 funkcijų implentacija. 
+\end{itemize}
 
 \subsection{Duomenų apdorojimas}
 \subsubsection{Tokenization --- teksto išskaldymas į reikšmingas dalis}
@@ -101,17 +141,21 @@ Dažnai programos (angliškai vadinamos stemmers) gauna žodį ir gražina jo š
 \\Kitas būdas raidžių n-gramos, panašiuose žodžiuose panašios n-gramos. Standartiškai Europinėms kalboms $n = 4$. Stemming’as gali ivykti skirtinguose apdorojimo etapuose priklausomai nuo užduoties.
 
 \subsubsection{Nereikšmingų žodžių pašalinimas}
-\LTandENG{Nereikšmingi žodžiai}{stop-words} --- tai tokie žodžiai (įvardžiai, prielinksniai, jungtukai ir pan.) kurie jungia reikšmingas teksto dalis. Reikia atkreipti dėmėsį, kad skirtingos sritys gali turėti skirtingus stop-word (pvz internete žodis “click”). Taip pat kai kurios frazės gali būti sudarytos iš stop-word ir turėti prasmę (“to be or not to be”). Šiai problemai naudojami specifinės kalbos ir srities žodynų junginys.%\todo[inline]{Paieskok lietuvisku variantu}
+\ltang{Nereikšmingi žodžiai}{stop-words} --- tai tokie žodžiai (įvardžiai, prielinksniai, jungtukai ir pan.) kurie jungia reikšmingas teksto dalis. Reikia atkreipti dėmėsį, kad skirtingos sritys gali turėti skirtingus stop-word (pvz internete žodis “click”). Taip pat kai kurios frazės gali būti sudarytos iš stop-word ir turėti prasmę (“to be or not to be”).\toadd{Search for Lithuanian equivalent} Šiai problemai naudojami specifinės kalbos ir srities žodynų junginys.
 
 \subsubsection{Sinonimiškumas ir Polisemija}
-Indexų pavyzdžiai: Wordnet, MeSH, taip pat yra daug statistinių metodų. Kartais prašoma vartotojų Prašoma nurodyti kurią iš sinonimo reikšmių jie turėjo omeny arba vertinti paieškos rezultatus nurodant kurie atitinka o kurie ne, tokiu butu paieškos problema paversti į supervised learning problemą (relevance feedback).
+Indexų pavyzdžiai: Wordnet, MeSH, taip pat yra daug statistinių metodų. Kartais prašoma vartotojų nurodyti kurią iš sinonimo reikšmių jie turėjo omeny arba vertinti paieškos rezultatus nurodant kurie atitinka o kurie ne, tokiu butu paieškos problema paversti į supervised learning problemą (relevance feedback).
 
 \subsection{Pavertimas į patogia formą}
-4. Computing term frequencies or tf-idf
+4. Computing term frequencies or \toadd{find about other forms} tf-idf
 After pre-processing the text data, we can then proceed to generate features. For document clustering, one of the most common ways to generate features for a document is to calculate the term frequencies of all its tokens. Although not perfect, these frequencies can usually provide some clues about the topic of the document. And sometimes it is also useful to weight the term frequencies by the inverse document frequencies. See tf-idf for detailed discussions.
 
-\section{Algoritmai}
-Klasterizacijos algoritmai yra skirstomi į šias rūšis:
+\section{Klasterizavimas}
+
+Klasteriu vadinama panašių objektų grupė. Klasterinės analizės pagalba galima objektų arba reikšmių aibes pagal panašumą suskaidyti į tam tikras grupes (klasterius). Svarbu suskirstyti objektus taip, kad klasterių viduje esančių elementų skirtumas būtų labai mažas, o objektų iš skirtingų grupių (klasterių) skirtumas būtų gana didelis. 
+Klasifikuojant duomenis iš anksto apibrėžiamos kategorijos ir priklausomai nuo duomenų turinio jie yra priskiriami kuriai nors iš tų kategorijų (klasių), todėl duomenų klasifikacija dar yra vadinama \ltang{apmokymo su mokytoju}{supervised learning} arba \ltang{prižiūrimu klasifikavimu}{supervised classification}. Tuo tarpu klasterizuojant tekstinius dokumentus jokios iš anksto apibrėžtų kategorijų (klasių) aibės nėra, ir todėl klasterizavimas dar vadinamas \ltang{apmokymo be mokytojo}{unservised learning} arba \ltang{neprižiūrimu klasifikavimu}{unsupervised classification}. Prieš skirstant objektus į klasterius dažniausiai nežinome kiek klasterių egzistuoja ir klasterinės analizės pagalba atpažįstama grupavimo struktūra be jokios išankstinės informacijos. 
+Klasterinėje analizėje vienas svarbiausių uždavinių yra homogeniškų grupių nustatymas. Tuo atveju, kai stebimus objektus charakterizuojantys požymiai yra matuojami santykių arba intervalų skale, taikomi metriniai atstumo matai, kitaip dar vadinami skirtingumo matais, nes kuo reikšmė mažesnė, laikoma, kad tuo objektai yra panašesni.
+
 Klasterizacijos algoritmai gali padėti atsakyti į klausimus:
 \begin{itemize}
 	\item Ar ir kiek sub-populiaciju turi mano duomenys
@@ -119,17 +163,55 @@ Klasterizacijos algoritmai gali padėti atsakyti į klausimus:
 	\item Ar sub-populiacijos turi bendrų savybių
 	\item Ar sub-populiacijos yra vientisos ar jas galima papildomai išskaldyti
 \end{itemize}
+\subsection{Elementų panašumo („atstumo“) nustatymoas}
+\toadd{Remove redundent, add description, uses, formulas and graphs}Atstumai
+\begin{itemize}
+	\item Manheteno
+	\item Euklido
+	\item Euklido atstumo kvadratas
+	\item Čebyševo atstumas 
+	\item Minkowski atstumas 
+	\item Kosinuso atstumas 
+	\item Žakardo atstumas 
+	\item Daiso atstumas 
+\end{itemize}
+\subsection{Algoritmų rūšys}
+\note{Kita skistymo versija}
+Duomenų klasterizavimo algroritmai bendrai gali būti suskirstyti į\cite{kadhim2014text}: 
+\begin{itemize}
+	\item \ltang{Padalijimo metodai}{Partitioning methods}
+	\item \ltang{Herarkiniai metodai}{Hierarchical methods}
+	\item \ltang{Tankumu paremti metodai}{Density-based methods}
+	\item \ltang{Tinkliniai metodai}{Grid-based methods}
+	\item \ltang{Modeliu paremti metodai}{Model-based methods}
+	\item \ltang{}{Frequent pattern-based clustering}
+	\item \ltang{Suvaržymu paremti metodai}{Constraint-based clustering}
+\end{itemize}
+
+Padalinjimo metodai sugeneruoja nepersidengenčių duomeų \ltang{pogrupius}{subset} taip, kad kiekvienas duomuo yra tik viename pogrupyje. Šiems metodams reikia išanksto nurodyti kiek klasterių norima turėti. Keletas šio tipo technikų: k-means ir variacijos of k-means-bisecting, k-medoids, PAM (Kaufman and Rousseeuw, 1987), CLARA (Kaufmann and Rousseeuw, 1990), CLARANS (Ng and Han, 1994)\ldots
+
+Herarchiniai metodai sugenretuoja \ltang{}{nested} grupe klasterių kurie yra suskirstyti pagal medžio struktūrą. Šie algoritmai papildomai skirstomi į:\\
+	\ltang{aglomeraciniai}{agglomerative} --- dar kitaip žinomi kaip \ltang{iš apačios į viršų}{bottom-up} iš pradžių duomenis laiko kaip atskiras klasterio dalis ir nuosekliai jungia poras artimiausių klasterių į naujus tol kol visi klasteriai sujungiami į vieną.\\
+	\ltang{diviziniai}{divisive} --- dar kitaip žinomas kaip \ltang{iš viršaus į apačią}{top-down} iš pradžių visi duomenys priskiriami vienam klasteriu ir padalijimai yra atliekami rekursyviai besileidžian herarchija.Viešai prieinamos herarchinės technikos yra ROCK [4], Chamelon [5], BIRCH [6] and UPGMA.\needsource{išimk reikalingas citatas} \\
+	Tankumo technikos sugrupuoja duomenis kurie yra pakankamai arti vieni kitų (tankūs), o retai išsidėsčiusius duomenis laiko \ltang{triukšmu}{noise} ir yra nepriskiremi jokiam klasteriui. Viešai prieinamos technikos yra DBSCAN ir praplėtimai, OPTICS and DENCLUE [6].\\
+	Tinkliniai metodai naudoja \ltang{skirtingos raiškos}{multi\textendash{} resolution} tinklelio struktūrą duomenų surinkimui. Pagrindinis šios technikos privalumas \textendash{} našumas.\\
+	Modelinės technikos gauna nurodumus kaip turi atrodyti klasteriai ir tada bando kiek galima geraiu joms pritaikyti duomenis.\\
+	Dazniu paremti modeliai, as ju kolkas nesuprantu.\\
+Suvaržymų(reikalavimų) paremti metodai naudojasi vartotojo ar programos nurodytais reikalavimais.\toadd{better explenation}
+
+\subsection{Algoritmų skirstymas}
 Klasteringo algoritmai skirstomi į šiuos tipus:
 \begin{itemize}
 	\item monothetic – visi populiacijos nariai turi kažkokia bendrą savybę (vyrai nuo 20 iki 25 metų amžiaus)
 		\\polythetic – nariai yra panšūs, bet neturi konkrečios bendros savybės (kai atstumas tarp narių nurodo priklausomybę grupei)
-	\item \LTandENG{kieti}{hard} klasteriai – kai grupės neturi bendrų narių. Kartais gali atsirasti atėjai kai elementas “matematiškai” gali priklausyti ne vienai grupei, bet toks atvėjis yra retas.
-		\\\LTandENG{minkšti}{soft} klasteriai – kai grupės gali turėti bendrų narių. Tokiu atveju galime nagrinėti kaip konkretus elementas priklauso skirtingoms grupėms ir kaip gerai jas atitinka.
-	\item \LTandENG{plokšti}{flat} – kai elementai suskirstomi į grupes, kurios viena kitai yra lygios.
-		\\\LTandENG{herarkiški}{hierarchical}Hierarchical (herarkiškas) (taxonomy) – Kai grupė gali būti sudaryta iš kelių “konkretesnių” grupių. Pvz.\ retryveris $\,\to\,$ šuo $\,\to\,$ žinduolis $\,\to\,$ gyvūnas
+	\item \ltang{kieti}{hard} klasteriai – kai grupės neturi bendrų elementų. Kartais gali susidaryti atvėjai kai elementas “matematiškai” priklauso ne vienai grupei. Nortin išlaikyti determiniškumą tokiu atveju reikia nurodyti pasirinkimo taisykle.
+		\\\ltang{minkšti}{soft} klasteriai – kai grupės gali turėti bendrų elementų. Tokiu atveju galime nagrinėti kaip konkretus elementas priklauso skirtingoms grupėms ir kaip gerai jas atitinka.
+	\item \ltang{plokšti}{flat} – kai elementai suskirstomi į grupes, kurios viena kitai yra lygios.
+		\\\ltang{herarkiški}{hierarchical} (taxonomy) – Kai grupė gali būti sudaryta iš kelių “konkretesnių” grupių. Pvz.\ retryveris $\,\to\,$ šuo $\,\to\,$ žinduolis $\,\to\,$ gyvūnas
 \end{itemize}
 Šiame skyriuje apžvelksiu algoritmų:
 
+\iffalse{}
 \begin{table}[H]\footnotesize
   \centering
   \caption{Lentelės pavyzdys}    % Antraštė įterpiama prieš lentelę
@@ -142,9 +224,10 @@ Klasteringo algoritmai skirstomi į šiuos tipus:
 	\bottomrule
   \end{tabular}}
 \end{table}
+\fi{}
 
-\subsection{K-means}
-\LTandENG{K-vidurkių}{K-mean} algoritmas suskirsto duomenis į nurodytą ($ k $) klasterių. \[ \underset{\mathbf{S}} {\operatorname{\arg \min}}  \sum_{i=1}^{k} \sum_{\mathbf x \in S_i} \left\| \mathbf x - \boldsymbol\mu_i \right\|^2 \]
+\subsubsection{K-means}
+\ltang{K-vidurkių}{K-mean} algoritmas suskirsto duomenis į nurodytą ($ k $) klasterių. \[ \underset{\mathbf{S}} {\operatorname{\arg \min}}  \sum_{i=1}^{k} \sum_{\mathbf x \in S_i} \left\| \mathbf x - \boldsymbol\mu_i \right\|^2 \]
 Praktikoje dažniausiai naudojamas duodama $n$ vektroių (su $d$ dimensijų) ir numeris $k$.  Sustatome $k$ centroidų $c$ į atsitiktines vietas.
 \begin{enumerate}
 	\item Kiekvienam taskui (vektoriui) randame artimiausia c
@@ -155,41 +238,42 @@ Praktikoje dažniausiai naudojamas duodama $n$ vektroių (su $d$ dimensijų) ir 
 
 %\subsection{mixture models}
 \subsection{Hierarchinis klasterizavimas}
-\LTandENG{Hierarchical clustering}{Hierarchinis klasterizavimas} Šis metodas neskirsto dokumentu į konkrečias gr, bet vietoj to suskirsto dokuemntus į herarhicja. Tam atlikti reikiai būdo kaip matuoti dokumentų panašumą. 
+\ltang{Hierarchical clustering}{Hierarchinis klasterizavimas} Šis metodas neskirsto dokumentu į konkrečias gr, bet vietoj to suskirsto dokuemntus į herarhicja. Tam atlikti reikiai būdo kaip matuoti dokumentų panašumą. 
 
 \BigO{n^3}
 
-\subsection{Expectation maximization}
-\subsection{Farthest First}
-\subsection{Density Based Spatial Clustering}
-\subsection{Fuzzy k-means}
-\subsection{Dirichlet}
+\subsubsection{Expectation maximization}
+\subsubsection{Farthest First}
+\subsubsection{Density Based Spatial Clustering}
+\subsubsection{Fuzzy k-means}
+\subsubsection{Dirichlet}
 
-\subsection{Affinity Propagation}
-\subsection{Mean Shift}
-\subsection{Spectral clustering}
-\subsection{Birch}
+\subsubsection{Affinity Propagation}
+\subsubsection{Mean Shift}
+\subsubsection{Spectral clustering}
+\subsubsection{Birch}
 
 
-\subsection{Binarization of consensus partition matrices}
-\subsection{Canopy clustering algorithm}
-\subsection{Cluster-weighted modeling}
-\subsection{Cobweb}
-\subsection{Complete-linkage clustering}
-\subsection{Constrained clustering}
-\subsection{CURE data clustering algorithm}
-\subsection{Data stream clustering}
-\subsection{DBSCAN}
-\subsection{FLAME clustering}
-\subsection{Fuzzy clustering}
-\subsection{Hoshen–Kopelman algorithm}
+\subsubsection{Binarization of consensus partition matrices}
+\subsubsection{Canopy clustering algorithm}
+\subsubsection{Cluster-weighted modeling}
+\subsubsection{Cobweb}
+\subsubsection{Complete-linkage clustering}
+\subsubsection{Constrained clustering}
+\subsubsection{CURE data clustering algorithm}
+\subsubsection{Data stream clustering}
+\subsubsection{DBSCAN}
+\subsubsection{FLAME clustering}
+\subsubsection{Fuzzy clustering}
+\subsubsection{Hoshen–Kopelman algorithm}
 
+\subsection{Kiti metodai}
 \subsection{Latent Dirichlet allocation}
 Latent Dirichlet allocation (toliau LDA, nesumaišyti su Linear discriminant analysis, kas yra kitas mašininio mokymosi metodas). Yra kurkas sudetingesnis dokumentu analizavimo metodas. Kartais priskiremas atskirai algoritmu klasei Topic modeling, kuri bando ne grupuoti duomenis o suteigti jiems temas. Palyginant su praeitais metodais dokumentai turėjo priklausyti vienai iš klasterių ar jų herarkijai, bet dokumentas gali turėti kelias temas. 
 % Reikia perkelti ir tiksliau apibrėžti ką būtent gražina.	
 Todėl LDA gražina ne sugrupuotus duomenis, o pasiskirstymą kiek kokių temų turi kiekvienas dokumentas  
 
-\section{Algoritmų testavimas}
+\section{Algoritmų testavimas/Kokybės vertinimas}
 Viena iš fundamentalių neprižiūrimo mokymosi problemų yra modelių testavimas. Skirtingai nei „prižurimame mokymasi“ kur svarbu atdidėti dali duomenų su kuriais nėra mokomasi o tik testuojama sugeneruoti modeliai, „neprižiurimame mokymasi“ mes to nelgalim atlikti\ldots Bet egzsituoja keltatas metodu kaip galima patikrinti sudarytus klasterius.
 \begin{itemize}
 	\item Pirma galima sugeneruotus klasterius leisti tikrinti \textbf{žmonėms }. Tam yra keli būdai. Galima tiesiog duoti sugeneruotus klasterius ir bandyti nuspresti ar jie tinkami. Taipat galima parainkti du atsitiktinius dokumentus ir spėti ar jie turėtu būti viename ar atskiruose klasteriuose, ir tada palyginti su kompiuterio sugeneruotu rezultatu. 
