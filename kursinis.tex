@@ -10,7 +10,6 @@
 %\usepackage{url}
 
 %My personal additions
-\iffalse{}
 	%\usepackage{xargs}
 	\usepackage[rgb,dvipsnames]{xcolor}
 	\usepackage[colorinlistoftodos,prependcaption,textsize=footnotesize,disable]{todonotes} 
@@ -22,7 +21,6 @@
 
 	\reversemarginpar{}
 	\setlength{\marginparwidth}{5.5cm} 
-\fi
 
 % Titulinio aprašas
 \university{Vilniaus universitetas}
@@ -47,7 +45,6 @@
 \newcommand{\ltang}[2]{#1 (angl.\  \textit{#2}) }
 \newcommand{\BigO}[1]{$\mathcal{O}(#1)$}
 
-\iffalse{}
 	\newcommand{\rewrite}[2]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 	\newcommand{\needsource}[1]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,]{#1}}
 	\newcommand{\toadd}[1]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,]{#1}}
@@ -55,10 +52,6 @@
 	\newcommand{\thiswillnotshow}[2]{\todo[disable,#1]{#2}}
 
 	\listoftodos[Notes]
-\fi
-\newcommand{\toadd}[1]{#1}
-\newcommand{\note}[1]{#1}
-\newcommand{\needsource}[1]{#1}
 
 \maketitle
 
@@ -105,6 +98,15 @@ Dokomentų klasterizacijos panaudojimai:
 
 
 
+\section{Dokumentu klasterizavimo pritaikymai}
+Dokumentu klasterizacija turi daug pritaikymų ivairiose verso ir mokslo srityse. Iš pradžių, dokumentų klasterizacija buvo tiriamas \ltang{informacijos išgavimo sistemomų}{information retrieval systems} tikslumui ir kokybei pagerinti. Toliau išvardinsim keletą pagrindinių klasterizavimo panaudojimo sričių\cite{jajoo2008document}.
+\begin{itemize}
+	\item \textbf{Ieškant panašių dokumentų} Ši funkcija dažniausiai panaudojama kai vartotojas perskaito patikusi straipsni ar tarp paieškos rezultatų randa „patikusi“ dokumentą ir nori daugiau panašių straipsnių ar rezultatų. Šis atvėjis vertingas nes klasterizacija sugebėjo surasti dokumentus kurie yra konceptuoliai panašūs vietoj paieška paremtų metodų kurie gali atrasti tik ar dokumentas turi panašių žodžių su paieškos užklausa.  
+	\item \textbf{Didelių dokumentų rinkinių orangizavimas} Dokumentų paieška paskirtis yra surasti dokumentus kurie yra aktualūs pagal pateiktą užklausą, bet tai nėra tinkamas būdas susidaryti bendram vaizda iš viso nekategorizuotų dokumentų rinkinio. Šios problemos išukis yra suorganizuoti dokumentu į grupes (taksonomija) idnetiškas tokioms kurias sukurtu žmogus turint pakankamai laiko. Tada šį grupavimą panaudoti kaip naršymo sąsają lengvesniam dokumentų naršymui. 
+	\item \textbf{Besiduplikuojančio turinio aptikimas} Daugybėja sričių yra atvejų kai reikia rasti duplikatus ar beveik duplikatus. Nors trivialiems atvėjams pakanka primityvių metodų, bet sudetingesniems atvejams klaserizacija yra vienas iš sprendimų. Klasterizacija yra aktyviai naudojama plagyjavimo detekcijai, straipsnių apie tą pati įvyki iš skirtingų publikacijų suradimui, paieškos rezultatų pertvarkymui (norint didesnės diversijos tarp pirmų rezultatų).
+	\item \textbf{Rekomendacijų sistemos} Šioje problemoje vartotojui yra rekomenduojami straipsniai rementis vartotojo jau perskaitytais straipsniais (perskaitytų straipsnių istorija). Ši problema dažniausiai sprendžiama lyginant vieno vartotojo skaitymo istorija su kitų vartotojų, deja šis sprendimas dažniausiai rekomenduoja pagal populiarumą straipsnius \rewrite{rekomentuoja dokumentus kurie yra populirarus ir netolygiai paskirsto rekomendacija \ldots} Tuo tarpu, lygintat perskaitytus straipsnius su jau sudarytais klasteriais tikėtinai gaunamos obijektyvesnės rekomendacijos. Taip pat galima panaudoti vartotojų perskaitytu straipsnių sarašus pagerinant klasterių kokybei.\footnote{Tai jau būtu prižiūrimo mokymo problema}.
+	\item \textbf{Paieškos variklių optimizacija} Klasterizacija labai vertinga paieškos rezultatų kokybę ir spartą. Tai atliekama pirma lyginant užklausą su klasteriais vietoj to, kad lyginti su kiekvienu dokumentu atskirai. Tuopačiu tai palengvina rezultatų rikiavimą, nes dalis klasterizacijos metodų leidžia lyginti konkretų dokumentą su visu klasteriu.  
+\end{itemize}
 \section{Duomenų išgavimas, apdorojimas ir pavertimas į patogia formą}
 	Jeigu dirbame su iš anksto neparuoštu \ltang{duomenų rinkiniu}{data set}, reika pradėti nuo duomenų apdorojimo\cite{kadhim2014text}. Šiuo atveju duomenys yra dokumentai kurie gali būti pateikti įvairiais formatais: moksliniai darbai Latex formatu, internetiniai puslapiai html fotmatu, elektroninės kngyos \ldots Šiuos dokumentus reikia transliuoti į patogesnią analizei formą. Taip pat dažnai susiduriant su žmogišku tekstu reikia ji paildomai apdoroti. Dažnai išemami stop words (nekaitomos kalbos dalys) (nebent atilekama frazių analizė) ir ženklai (!?\ldots), žodžiai pakeičiami į bendrinię formą, kad supaprastini apdorojamą teksta neprarandant gilesnės teksto minties. 
 
@@ -130,26 +132,36 @@ Tex yra dokumentų maketavimo kalba ypač dažnai naudojama matematikos, fizikos
 		Formatas paremtas daline HTML5 ir CSS3 funkcijų implentacija. 
 \end{itemize}
 
-\subsection{Duomenų apdorojimas}
-\subsubsection{Tokenization --- teksto išskaldymas į reikšmingas dalis}
-Žodžius, frazes ir t.t.\  vadinamas token. Vėliau šie žodžiai bus naudojami kaip ideksai žodyne. Tekstų tokenizacija yra vis dar aktyviai tiriama sritis, ypač kalboms kuriose nėra aiškių žodžių ribų (\url{https://en.wikipedia.org/wiki/Scriptio_continua}). Taip pat problematiški žodžiai su ženkalais viduje: I.B.M.\; pre-diabetes. Tokiais atvėjais netinka nei atskirti nei sujungti nes abejais atvėjais prarandama prasmė ir sukuremi netikslūs token’ai. Yra keli sprendimai: vienas padaryti abu (dalinti ir jungti) tokiu butu atsiranda daugiau triukšmo duomenyse, bet tai neturetu buti problema jeigu tvarkingi svoriai. 
+\subsection{Teksto apdorojimas}
+\ltang{Teksto apdorojimas}{Text preprocessing} tekstą iš patogios žmogui formos paverčia į patogia kompiuteriui. Šiame poskyryje pateikti žingsniai išdėstyti populiariai naudojama eilės tvarka, bet visda reikia atkreipti dėmesi koks tyrimas atliekamas ir pagal tai spresti ar žingsniai yra reikalingi ir ar jiems nereikia modifikacijų (Pvz. Stemming žingsnyje iš „geras“ ir „negeras“ taptu tuo pačiu žodžiu kas būtu netinkama \ltang{emocijų nustatymui}{Emotion Detection}).
+\subsubsection{Tokenization – teksto išskaldymas į reikšmingas dalis}
+Tai dažniausiai būna primas teksto apdorojimo žingsnis, jo metu iš neapdoroto teksto išgaunami atskiri tokenai (Žodžius, frazes atributai \note{rask tinkama reikšmę}) ir patalpinama į patogia duomenų struktūra tolesniam apdorojimui (Šiame žinksnyje taip pat panaikinami visi skyrybos ženklai ir nespausdinami simboliai) \note{ar TAB, ENTER, \@, \# ir kiti simboliai irgi yra skyrybos ženklai}. Dažniausiai naudojama \ltang{žodžių maišelio}{bag of words} duomenų struktūra (nors ji praranda teksto eiliškumą) \note{Detaliau aprašyk BOW}. Vėliau šie žodžiai bus naudojami kaip ideksai žodyne.
+Tekstų tokenizacija yra vis dar aktyviai tiriama sritis, ypač kalboms kuriose nėra aiškių žodžių ribų \note{parodyti pavizdžių apie Scriptio continua}. Taip pat problematiški žodžiai su ženkalais viduje: I.B.M.\; pre-diabetes. Tokiais atvėjais netinka nei atskirti nei sujungti nes abejais atvėjais prarandama prasmė ir sukuremi netikslūs token’ai. Yra keli sprendimai: vienas padaryti abu (dalinti ir jungti) tokiu butu atsiranda daugiau triukšmo duomenyse, bet tai neturetu buti problema jeigu tvarkingi sureguliuoti svoriai. 
 Morfologinė variacija. Problema su žodžiais kur viena šaknis gali turėti kelias skirtingas prasmes. Arabų kalba ypač sudėtinga šituo atžvilgiu nes turi palygint mažai šaknų, bet labai daug variacijų. Pokyčiai gali būti prieš, po ir pačioje šaknyje.
 
-\subsubsection{Stemming --- žodžio šaknies išgavimas.}
-Dažnai programos (angliškai vadinamos stemmers) gauna žodį ir gražina jo šaknį. Egzistuoja keli implementacijos būdai: 
-\\Naudojant parengtas taisykles ir išimčių žodynus. Šiam metodui implementuoti reikia kalbos eksperto kurio pagalba būtu suprogramuojamos visos taisyklės ir išimtys. Šis metodas veikia gerai bet reikalauja daug laiko, yra sudetingas ir sunkiai apibendrinamas.
-\\Kitas būdas raidžių n-gramos, panašiuose žodžiuose panašios n-gramos. Standartiškai Europinėms kalboms $n = 4$. Stemming’as gali ivykti skirtinguose apdorojimo etapuose priklausomai nuo užduoties.
-
 \subsubsection{Nereikšmingų žodžių pašalinimas}
-\ltang{Nereikšmingi žodžiai}{stop-words} --- tai tokie žodžiai (įvardžiai, prielinksniai, jungtukai ir pan.) kurie jungia reikšmingas teksto dalis. Reikia atkreipti dėmėsį, kad skirtingos sritys gali turėti skirtingus stop-word (pvz internete žodis “click”). Taip pat kai kurios frazės gali būti sudarytos iš stop-word ir turėti prasmę (“to be or not to be”).\toadd{Search for Lithuanian equivalent} Šiai problemai naudojami specifinės kalbos ir srities žodynų junginys.
+\ltang{Nereikšmingi žodžiai}{stop-words} – tai tokie žodžiai (įvardžiai, prielinksniai, jungtukai ir pan.) kurie jungia reikšmingas teksto dalis, bet patys nesutekiai tekstui reikšmės. Šiame žingsnyje taip pat gali būti pašalinti skaičiai ir specifiniai simboliai. Reikia atkreipti dėmėsį, kad skirtingos sritys gali turėti skirtingus stop-word (pvz internete žodis “click” dažnai naudojamas ir nėra labai prasmingas). Taip pat kai kurios frazės gali būti sudarytos iš stop-word ir turėti prasmę (“to be or not to be”).\toadd{Search for Lithuanian equivalent}.\\
+Šiai spresti įprastai sudaromas arba naudojamas specifinės kalbos ir srities žodynų junginys. Jeigu nėra galimybės gauti jau sudaryto žodyno, taip pat galima jį sugeneruoti iš turimų žodžių. Jeigu išgautus žodžius išrikiuotume pagal jų dažnį, galime atmesti dažniausius (nes galime spresti, kad jie nereikšmingi ir nepadės atskirti vieno teksto nuo kito) ir rečiausius (nes jie taip pat bus nereikšmingi, nes nesies skirtingų dokumentų). Generuojant savą žodyną gali prireikti šį ir sekany žingsni sujungti. 
+
+\subsubsection{Stemming – žodžio šaknies išgavimas.}
+Dažnai programos (angliškai vadinamos stemmers) gauna žodį ir gražina jo šaknį. Egzistuoja keli implementacijos būdai: \\
+Naudojant parengtas taisykles ir išimčių žodynus. Jeigu esamai kalbai ar sričiai nėra žodyno, tada implementavimui reikia kalbos eksperto kurio pagalba būtu suprogramuojamos visos taisyklės ir išimtys. Šis metodas veikia gerai bet reikalauja daug laiko, yra sudetingas ir sunkiai apibendrinamas.
+\\Kitas būdas panaudoti Stemminimo algoritmus, bet kaip ir su žodynais mažiau populiariom kalbom algortimai gali nebūti tinkamo algoritmo. \note{Nurodyti cituotus pavyzdžius ir galbūt jų veikimą}
+\\Taip pat galima panaudoti raidžių n-gramos, panašiuose žodžiuose panašios n-gramos. Standartiškai Europinėms kalboms $n = 4$. Stemming’as gali ivykti skirtinguose apdorojimo etapuose priklausomai nuo užduoties.
 
 \subsubsection{Sinonimiškumas ir Polisemija}
+%TODO maybe merge with stemming 
 Indexų pavyzdžiai: Wordnet, MeSH, taip pat yra daug statistinių metodų. Kartais prašoma vartotojų nurodyti kurią iš sinonimo reikšmių jie turėjo omeny arba vertinti paieškos rezultatus nurodant kurie atitinka o kurie ne, tokiu butu paieškos problema paversti į supervised learning problemą (relevance feedback).
 
-\subsection{Pavertimas į patogia formą}
+\subsection{Vector Space Model}
+Sukuriame matrica kurios eilutės atitinka dokumentus,stulpeliai žodžius, o elementai žodžio dažnį dokumente.
+The dimensionality reduction techniques are SVD, Independent Component Analysis (ICA) and Principle component Analysis (PCA). 
+\subsection{Pavertimas į patogia formą analizei}
 4. Computing term frequencies or \toadd{find about other forms} tf-idf
 After pre-processing the text data, we can then proceed to generate features. For document clustering, one of the most common ways to generate features for a document is to calculate the term frequencies of all its tokens. Although not perfect, these frequencies can usually provide some clues about the topic of the document. And sometimes it is also useful to weight the term frequencies by the inverse document frequencies. See tf-idf for detailed discussions.
 
+\subsection{Term Weighting}
+Term weighting can be as simple as binary representation or as detailed as a mix of term and dataset existence probabilities stemmed from complex information theoretic underlying concepts. TF-IDF is the most widely known and used weighting method, and it is remain even comparable with novel methods. In TF-IDF terms weighting, the text documents are modeled as transactions.  Selecting the keyword for the feature selection process is the main preprocessing step necessary for the indexing of documents.
 \section{Klasterizavimas}
 
 Klasteriu vadinama panašių objektų grupė. Klasterinės analizės pagalba galima objektų arba reikšmių aibes pagal panašumą suskaidyti į tam tikras grupes (klasterius). Svarbu suskirstyti objektus taip, kad klasterių viduje esančių elementų skirtumas būtų labai mažas, o objektų iš skirtingų grupių (klasterių) skirtumas būtų gana didelis. 
@@ -163,7 +175,8 @@ Klasterizacijos algoritmai gali padėti atsakyti į klausimus:
 	\item Ar sub-populiacijos turi bendrų savybių
 	\item Ar sub-populiacijos yra vientisos ar jas galima papildomai išskaldyti
 \end{itemize}
-\subsection{Elementų panašumo („atstumo“) nustatymoas}
+Kaip ir dalis kitų neprižiūrimo mokymosi metodų klasterizavimas gali būti panaudojmas dimenisjų sumažinimui. 
+\subsection{Elementų panašumo, atstumo nustatymas}
 \toadd{Remove redundent, add description, uses, formulas and graphs}Atstumai
 \begin{itemize}
 	\item Manheteno
@@ -179,35 +192,35 @@ Klasterizacijos algoritmai gali padėti atsakyti į klausimus:
 \note{Kita skistymo versija}
 Duomenų klasterizavimo algroritmai bendrai gali būti suskirstyti į\cite{kadhim2014text}: 
 \begin{itemize}
-	\item \ltang{Padalijimo metodai}{Partitioning methods}
-	\item \ltang{Herarkiniai metodai}{Hierarchical methods}
-	\item \ltang{Tankumu paremti metodai}{Density-based methods}
-	\item \ltang{Tinkliniai metodai}{Grid-based methods}
-	\item \ltang{Modeliu paremti metodai}{Model-based methods}
-	\item \ltang{}{Frequent pattern-based clustering}
-	\item \ltang{Suvaržymu paremti metodai}{Constraint-based clustering}
+	\item \ltang{\textbf{Padalijimo metodai}}{Partitioning methods}
+	\item \ltang{\textbf{Herarkiniai metodai}}{Hierarchical methods}
+	\item \ltang{\textbf{Tankumu paremti metodai}}{Density-based methods}
+	\item \ltang{\textbf{Tinkliniai metodai}}{Grid-based methods}
+	\item \ltang{\textbf{Modeliu paremti metodai}}{Model-based methods}
+	\item \ltang{\textbf{Dažni struktūriniai metodai}}{Frequent pattern-based clustering}
+	\item \ltang{\textbf{Suvaržymu paremti metodai}}{Constraint-based clustering}
 \end{itemize}
 
 Padalinjimo metodai sugeneruoja nepersidengenčių duomeų \ltang{pogrupius}{subset} taip, kad kiekvienas duomuo yra tik viename pogrupyje. Šiems metodams reikia išanksto nurodyti kiek klasterių norima turėti. Keletas šio tipo technikų: k-means ir variacijos of k-means-bisecting, k-medoids, PAM (Kaufman and Rousseeuw, 1987), CLARA (Kaufmann and Rousseeuw, 1990), CLARANS (Ng and Han, 1994)\ldots
 
 Herarchiniai metodai sugenretuoja \ltang{}{nested} grupe klasterių kurie yra suskirstyti pagal medžio struktūrą. Šie algoritmai papildomai skirstomi į:\\
-	\ltang{aglomeraciniai}{agglomerative} --- dar kitaip žinomi kaip \ltang{iš apačios į viršų}{bottom-up} iš pradžių duomenis laiko kaip atskiras klasterio dalis ir nuosekliai jungia poras artimiausių klasterių į naujus tol kol visi klasteriai sujungiami į vieną.\\
-	\ltang{diviziniai}{divisive} --- dar kitaip žinomas kaip \ltang{iš viršaus į apačią}{top-down} iš pradžių visi duomenys priskiriami vienam klasteriu ir padalijimai yra atliekami rekursyviai besileidžian herarchija.Viešai prieinamos herarchinės technikos yra ROCK [4], Chamelon [5], BIRCH [6] and UPGMA.\needsource{išimk reikalingas citatas} \\
+	\ltang{aglomeraciniai}{agglomerative} – dar kitaip žinomi kaip \ltang{iš apačios į viršų}{bottom-up} iš pradžių duomenis laiko kaip atskiras klasterio dalis ir nuosekliai jungia poras artimiausių klasterių į naujus tol kol visi klasteriai sujungiami į vieną.\\
+	\ltang{diviziniai}{divisive} – dar kitaip žinomas kaip \ltang{iš viršaus į apačią}{top-down} iš pradžių visi duomenys priskiriami vienam klasteriu ir padalijimai yra atliekami rekursyviai besileidžian herarchija.Viešai prieinamos herarchinės technikos yra ROCK [4], Chamelon [5], BIRCH [6] and UPGMA.\needsource{išimk reikalingas citatas} \\
 	Tankumo technikos sugrupuoja duomenis kurie yra pakankamai arti vieni kitų (tankūs), o retai išsidėsčiusius duomenis laiko \ltang{triukšmu}{noise} ir yra nepriskiremi jokiam klasteriui. Viešai prieinamos technikos yra DBSCAN ir praplėtimai, OPTICS and DENCLUE [6].\\
 	Tinkliniai metodai naudoja \ltang{skirtingos raiškos}{multi\textendash{} resolution} tinklelio struktūrą duomenų surinkimui. Pagrindinis šios technikos privalumas \textendash{} našumas.\\
 	Modelinės technikos gauna nurodumus kaip turi atrodyti klasteriai ir tada bando kiek galima geraiu joms pritaikyti duomenis.\\
 	Dazniu paremti modeliai, as ju kolkas nesuprantu.\\
-Suvaržymų(reikalavimų) paremti metodai naudojasi vartotojo ar programos nurodytais reikalavimais.\toadd{better explenation}
+Suvaržymų (reikalavimų) paremti metodai naudojasi vartotojo ar programos nurodytais reikalavimais.\toadd{better explenation}
 
 \subsection{Algoritmų skirstymas}
 Klasteringo algoritmai skirstomi į šiuos tipus:
 \begin{itemize}
-	\item monothetic – visi populiacijos nariai turi kažkokia bendrą savybę (vyrai nuo 20 iki 25 metų amžiaus)
-		\\polythetic – nariai yra panšūs, bet neturi konkrečios bendros savybės (kai atstumas tarp narių nurodo priklausomybę grupei)
-	\item \ltang{kieti}{hard} klasteriai – kai grupės neturi bendrų elementų. Kartais gali susidaryti atvėjai kai elementas “matematiškai” priklauso ne vienai grupei. Nortin išlaikyti determiniškumą tokiu atveju reikia nurodyti pasirinkimo taisykle.
-		\\\ltang{minkšti}{soft} klasteriai – kai grupės gali turėti bendrų elementų. Tokiu atveju galime nagrinėti kaip konkretus elementas priklauso skirtingoms grupėms ir kaip gerai jas atitinka.
-	\item \ltang{plokšti}{flat} – kai elementai suskirstomi į grupes, kurios viena kitai yra lygios.
-		\\\ltang{herarkiški}{hierarchical} (taxonomy) – Kai grupė gali būti sudaryta iš kelių “konkretesnių” grupių. Pvz.\ retryveris $\,\to\,$ šuo $\,\to\,$ žinduolis $\,\to\,$ gyvūnas
+	\item \textbf{monothetic }– visi populiacijos nariai turi kažkokia bendrą savybę (vyrai nuo 20 iki 25 metų amžiaus)
+		\\\textbf{polythetic }– nariai yra panšūs, bet neturi konkrečios bendros savybės (kai atstumas tarp narių nurodo priklausomybę grupei)
+	\item \ltang{\textbf{kieti}}{hard} klasteriai – kai grupės neturi bendrų elementų. Kartais gali susidaryti atvėjai kai elementas “matematiškai” priklauso ne vienai grupei. Nortin išlaikyti determiniškumą tokiu atveju reikia nurodyti pasirinkimo taisykle.
+		\\\ltang{\textbf{minkšti}}{soft} klasteriai – kai grupės gali turėti bendrų elementų. Tokiu atveju galime nagrinėti kaip konkretus elementas priklauso skirtingoms grupėms ir kaip gerai jas atitinka.
+	\item \ltang{\textbf{plokšti}}{flat} – kai elementai suskirstomi į grupes, kurios viena kitai yra lygios.
+		\\\ltang{\textbf{herarkiški}}{hierarchical} (taxonomy) – Kai grupė gali būti sudaryta iš kelių “konkretesnių” grupių. Pvz.\ retryveris $\,\to\,$ šuo $\,\to\,$ žinduolis $\,\to\,$ gyvūnas
 \end{itemize}
 Šiame skyriuje apžvelksiu algoritmų:
 
