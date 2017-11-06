@@ -5,14 +5,14 @@
 %\usepackage{amsfonts}
 \usepackage{amsmath}
 %\usepackage{bm}
-%\usepackage{color}
+\usepackage{color}
 \usepackage{hyperref}  % Nuorodų aktyvavimas
 %\usepackage{url}
 
 %My personal additions
 	%\usepackage{xargs}
 	\usepackage[rgb,dvipsnames]{xcolor}
-	\usepackage[colorinlistoftodos,prependcaption,textsize=footnotesize,disable]{todonotes} 
+	\usepackage[colorinlistoftodos,prependcaption,textsize=footnotesize]{todonotes} 
 	\usepackage{booktabs}
 
 	\addtolength{\oddsidemargin}{3cm}
@@ -45,19 +45,19 @@
 \newcommand{\ltang}[2]{#1 (angl.\  \textit{#2}) }
 \newcommand{\BigO}[1]{$\mathcal{O}(#1)$}
 
-	\newcommand{\rewrite}[2]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
-	\newcommand{\needsource}[1]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,]{#1}}
-	\newcommand{\toadd}[1]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,]{#1}}
-	\newcommand{\note}[2]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum]{#1}}
-	\newcommand{\thiswillnotshow}[2]{\todo[disable,#1]{#2}}
+\newcommand{\rewrite}[1]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red]{#1}}
+\newcommand{\needsource}[1]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,]{#1}}
+\newcommand{\toadd}[1]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,]{#1}}
+\newcommand{\note}[1]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum]{#1}}
+\newcommand{\thiswillnotshow}[1]{\todo[disable]{#1}}
 
-	\listoftodos[Notes]
+\listoftodos[Notes]
 
 \maketitle
 
 \tableofcontents
 
-\sectionnonum{Sąvokų apibrėžimai}
+%\sectionnonum{Sąvokų apibrėžimai}
 %Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
 
 \sectionnonum{Įvadas}
@@ -65,23 +65,25 @@
 Šiais laikais kai kiekvienas žmogus turintis priėjimą prie interneto gali dalintis informacija, daugybė knygu yra skaitmenizuojamos kiekvieną dieną ir mokslo institucijos dalinasi savo moksline informacija, pasiekemos informacijos kiekis didėja su kiekviena diena ir pagrindinė problema nebėra informacijos trūkumas, o atradimas ko reikia. Tam spresti buvo ir yra kuriama ivairūs mechanizmai: paiškos varikliai\ldots Šiame darbe autorius nagrinės viena iš šios problemos sprendimo metodų, klasterizacijos algoritmus ir jų panaudojimą textinems dokumentams. %Klasterizacijos algoritmai priklauso neprižiūrimo mokymosi \textbf{tipui} ir pagrinde naudojami.
 
 Šiandieninėje visuomenėje prieinamos informacijos kiekis didėja su kiekviena diena ir pagrindinė problema yra ne informacijos trūkumas, o jos gausa ir galimybė surasti reikiamą informaciją. Paieškos programos gali pateikti didelius kiekius tekstinių dokumentų, bet reikiamo dokumento paieška užima daug laiko ir be to, ne visada gauta informacija atitinka paiešką. Tekstinių dokumentų paieškos procesui palengvinti ir pagreitinti gali būti taikomi klasterizavimo metodai, kurie yra pakankamai gerai žinomi ir jau seniai naudojami duomenų klasterizavimui.  Klasterizavimo metu  dokumentai pagal savo turinį suskirstomi į klasterius vadovaujantis tam tikrais kriterijais, pvz., pagal temą, pagal dokumento naujumą ir pan. 
-Darbo tikslas – mokslinės literatūros apie dokumentų klasterizavimą apžvalga ir analizė  
+
+
+
+\section{Pagrindinė tiriamoji dalis}
+%Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika; pagal atitinkamas darbo dalis, nuosekliai, panaudojant lyginamosios analizės, klasifikacijos, sisteminimo metodus bei apibendrinimus, dėstoma sukaupta ir išanalizuota medžiaga.
+\toadd{Reikia nuspresti ką konkrečiau tirsiu ir tai aprašyti.}
+Darbo tikslas – mokslinės literatūros apie dokumentų apdorojimą ir klasterizavimą apžvalga ir analizė  
 
 Darbo uždaviniai: 
 \begin{enumerate}
+	\item Panaudojimo sritys
 	\item Dokumentų klasterizavimui naudojamų įrankių ir metodų apžvalga.
-	\item Dokumentų klasterizavimo žingsnių aprašymas
-	\item 
+	\item Dokumentų klasterizavimo proceso žingsnių aprašymas
+	\item Kylantys iššūkiai  
+	\item Susijusios problemos 
 \end{enumerate}
 
 Kursiniame darbe buvo siekta susipažinti su moksline literatūra, išanalizuoti egzistuojančius dokumentų klasterizavimo metodus ir įrankius, kurie bus išbandyti taikomojo pobūdžio  kursiniame darbe apie lietuviškų dokumentų klasterizavimą.
 
-Dokomentų klasterizacijos panaudojimai:
-\begin{itemize}
-	\item Automatinis dokumentų organizavimas. Dažnai alternatyvus šios problemos sprendimas yra dokumentų \ltang{žymėjimas}{taging}.
-	\item Temų \textbf{išgavimas}
-	\item Greitas informacijos paiška ir filtravimas, ypač
-\end{itemize}
 Šiame darbe taip pat bus paminėtos kitos su dokumentu klasterizacija susijusios problemos ir ši informacija bus išdėstyta eilės tvarka kaip būtu sprendžiamos užduotys.
 \begin{enumerate}
 	\item Duomenų išgavimas iš skirtingų tekstinių dokumentų formatų
@@ -90,12 +92,6 @@ Dokomentų klasterizacijos panaudojimai:
 	\item Algoritmų testavimas
 	\item Rezultatų vizuoalizacija
 \end{enumerate}
-
-
-
-\section{Pagrindinė tiriamoji dalis}
-%Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika; pagal atitinkamas darbo dalis, nuosekliai, panaudojant lyginamosios analizės, klasifikacijos, sisteminimo metodus bei apibendrinimus, dėstoma sukaupta ir išanalizuota medžiaga.
-
 
 
 \section{Dokumentu klasterizavimo pritaikymai}
@@ -133,7 +129,7 @@ Tex yra dokumentų maketavimo kalba ypač dažnai naudojama matematikos, fizikos
 \end{itemize}
 
 \subsection{Teksto apdorojimas}
-\ltang{Teksto apdorojimas}{Text preprocessing} tekstą iš patogios žmogui formos paverčia į patogia kompiuteriui. Šiame poskyryje pateikti žingsniai išdėstyti populiariai naudojama eilės tvarka, bet visda reikia atkreipti dėmesi koks tyrimas atliekamas ir pagal tai spresti ar žingsniai yra reikalingi ir ar jiems nereikia modifikacijų (Pvz. Stemming žingsnyje iš „geras“ ir „negeras“ taptu tuo pačiu žodžiu kas būtu netinkama \ltang{emocijų nustatymui}{Emotion Detection}).
+\ltang{Teksto apdorojimas}{Text preprocessing} tekstą iš patogios žmogui formos paverčia į patogia kompiuteriui. Šiame poskyryje pateikti žingsniai išdėstyti populiariai naudojama eilės tvarka, bet visda reikia atkreipti dėmesi koks tyrimas atliekamas ir pagal tai spresti ar žingsniai yra reikalingi ir ar jiems nereikia modifikacijų (Pvz. Stemming žingsnyje iš „geras“ ir „negeras“ taptu tuo pačiu žodžiu kas būtu netinkama \ltang{emocijų nustatymui}{Emotion Detection}). Šie žingsniai netik padeda pagerinti našumą, bet ir rezultatų kokybę\cite{mugunthadevi2011survey}.
 \subsubsection{Tokenization – teksto išskaldymas į reikšmingas dalis}
 Tai dažniausiai būna primas teksto apdorojimo žingsnis, jo metu iš neapdoroto teksto išgaunami atskiri tokenai (Žodžius, frazes atributai \note{rask tinkama reikšmę}) ir patalpinama į patogia duomenų struktūra tolesniam apdorojimui (Šiame žinksnyje taip pat panaikinami visi skyrybos ženklai ir nespausdinami simboliai) \note{ar TAB, ENTER, \@, \# ir kiti simboliai irgi yra skyrybos ženklai}. Dažniausiai naudojama \ltang{žodžių maišelio}{bag of words} duomenų struktūra (nors ji praranda teksto eiliškumą) \note{Detaliau aprašyk BOW}. Vėliau šie žodžiai bus naudojami kaip ideksai žodyne.
 Tekstų tokenizacija yra vis dar aktyviai tiriama sritis, ypač kalboms kuriose nėra aiškių žodžių ribų \note{parodyti pavizdžių apie Scriptio continua}. Taip pat problematiški žodžiai su ženkalais viduje: I.B.M.\; pre-diabetes. Tokiais atvėjais netinka nei atskirti nei sujungti nes abejais atvėjais prarandama prasmė ir sukuremi netikslūs token’ai. Yra keli sprendimai: vienas padaryti abu (dalinti ir jungti) tokiu butu atsiranda daugiau triukšmo duomenyse, bet tai neturetu buti problema jeigu tvarkingi sureguliuoti svoriai. 
@@ -153,15 +149,25 @@ Naudojant parengtas taisykles ir išimčių žodynus. Jeigu esamai kalbai ar sri
 %TODO maybe merge with stemming 
 Indexų pavyzdžiai: Wordnet, MeSH, taip pat yra daug statistinių metodų. Kartais prašoma vartotojų nurodyti kurią iš sinonimo reikšmių jie turėjo omeny arba vertinti paieškos rezultatus nurodant kurie atitinka o kurie ne, tokiu butu paieškos problema paversti į supervised learning problemą (relevance feedback).
 
-\subsection{Vector Space Model}
+\subsection{Dokumento reprezentacija}
+Po Teksto apdorojimo žinsnių turimas tekstas vis dar nėra tinkamas klasterizavimui, mums dar reikia jį paversti į tinkamą duomenų struktūrą. Dėl didelio terminų kiekio (net po visų teksto apdorojimo žingsnių) klasterizuojant dokumentus iškyla našumo problemos. Naudojant iprastą matricos reprezentacija kiekvienas terminas būtu \textbf{feature} (eilutė), o dokumentas stulpelius. Šiame žinksnyje žodžiams yra priskiremi svoriai (pagal juo dalis žodžių yra pašalinama).
+\subsubsection{Term Weighting}
+Term weighting can be as simple as binary representation or as detailed as a mix of term and dataset existence probabilities stemmed from complex information theoretic underlying concepts. TF-IDF is the most widely known and used weighting method, and it is remain even comparable with novel methods. In TF-IDF terms weighting, the text documents are modeled as transactions.  Selecting the keyword for the feature selection process is the main preprocessing step necessary for the indexing of documents.
+\subsubsection{Terminų dažnis (TF)}
+\ltang{Terminų dažnis}{Term Frequency} vienas pirmųjų ir paprasčiausių (bet efektyvus) terminų metodas. Pirmą kartą pateiktas 1957\cite{luhn1957statistical}. Tekstų rinkinyje, dokuemtai kurie priklauso tai pačiai temai, labiau tikėtina, kad naudos panašius žodžius. Taigi dažni žodžiai bus geri tam tikrų temų indikatoriai. Galime teigti, kad dažnas žodis, tolygiai pasiskirstęs tarp temų nėra informativus. Taigi toks žodis būtu pašalinamas. Šia techniką vadiname „pruning high highly frequent terms“. Ta pati galim  atlikti su labai retai pasitaikančiais žodžiais, tai vadinama „pruning infrequent terms“.
+\rewrite{Ankstesne sesiją dėl stop words, galbūt linkinti į šia dali.} 
+\toadd{formule su paaiškinimu}
+\subsubsection{idf}
+\subsubsection{tf-idf}
+4. Computing term frequencies or \toadd{find about other forms} tf-idf After pre-processing the text data, we can then proceed to generate features. For document clustering, one of the most common ways to generate features for a document is to calculate the term frequencies of all its tokens. Although not perfect, these frequencies can usually provide some clues about the topic of the document. And sometimes it is also useful to weight the term frequencies by the inverse document frequencies. See tf-idf for detailed discussions.
+\subsubsection{Chi Square statistic}
+\subsubsection{Frequent Term-Based Text Clustering}
+\subsubsection{Frequent Term Sequence}
+\subsubsection{Vector Space Model}
 Sukuriame matrica kurios eilutės atitinka dokumentus,stulpeliai žodžius, o elementai žodžio dažnį dokumente.
 The dimensionality reduction techniques are SVD, Independent Component Analysis (ICA) and Principle component Analysis (PCA). 
-\subsection{Pavertimas į patogia formą analizei}
-4. Computing term frequencies or \toadd{find about other forms} tf-idf
-After pre-processing the text data, we can then proceed to generate features. For document clustering, one of the most common ways to generate features for a document is to calculate the term frequencies of all its tokens. Although not perfect, these frequencies can usually provide some clues about the topic of the document. And sometimes it is also useful to weight the term frequencies by the inverse document frequencies. See tf-idf for detailed discussions.
 
-\subsection{Term Weighting}
-Term weighting can be as simple as binary representation or as detailed as a mix of term and dataset existence probabilities stemmed from complex information theoretic underlying concepts. TF-IDF is the most widely known and used weighting method, and it is remain even comparable with novel methods. In TF-IDF terms weighting, the text documents are modeled as transactions.  Selecting the keyword for the feature selection process is the main preprocessing step necessary for the indexing of documents.
+
 \section{Klasterizavimas}
 
 Klasteriu vadinama panašių objektų grupė. Klasterinės analizės pagalba galima objektų arba reikšmių aibes pagal panašumą suskaidyti į tam tikras grupes (klasterius). Svarbu suskirstyti objektus taip, kad klasterių viduje esančių elementų skirtumas būtų labai mažas, o objektų iš skirtingų grupių (klasterių) skirtumas būtų gana didelis. 
@@ -199,6 +205,12 @@ Duomenų klasterizavimo algroritmai bendrai gali būti suskirstyti į\cite{kadhi
 	\item \ltang{\textbf{Modeliu paremti metodai}}{Model-based methods}
 	\item \ltang{\textbf{Dažni struktūriniai metodai}}{Frequent pattern-based clustering}
 	\item \ltang{\textbf{Suvaržymu paremti metodai}}{Constraint-based clustering}
+	\item Papildomi, pritaikomi Web dokumentų klasterizacijai\cite{oikonomakou2005review} 
+	\item \ltang{\textbf{Grafų metodai}}{Graph based clustering}
+	\item \ltang{\textbf{Neuroninių tinklų metodai}}{Neural Network based clustering}
+	\item \ltang{\textbf{Tikimybiniai metodai}}{Probabilistic clustering}
+	\item \ltang{\textbf{Ontologiniai metodai}}{Ontological clustering}
+	\item \ltang{\textbf{Nuorodomis paremti metodai}}{Link-based clustering}
 \end{itemize}
 
 Padalinjimo metodai sugeneruoja nepersidengenčių duomeų \ltang{pogrupius}{subset} taip, kad kiekvienas duomuo yra tik viename pogrupyje. Šiems metodams reikia išanksto nurodyti kiek klasterių norima turėti. Keletas šio tipo technikų: k-means ir variacijos of k-means-bisecting, k-medoids, PAM (Kaufman and Rousseeuw, 1987), CLARA (Kaufmann and Rousseeuw, 1990), CLARANS (Ng and Han, 1994)\ldots
@@ -250,7 +262,7 @@ Praktikoje dažniausiai naudojamas duodama $n$ vektroių (su $d$ dimensijų) ir 
 \BigO{iteracijos*K*n*d} produce hard, flat, polythetic cluster. 
 
 %\subsection{mixture models}
-\subsection{Hierarchinis klasterizavimas}
+\subsubsection{Hierarchinis klasterizavimas}
 \ltang{Hierarchical clustering}{Hierarchinis klasterizavimas} Šis metodas neskirsto dokumentu į konkrečias gr, bet vietoj to suskirsto dokuemntus į herarhicja. Tam atlikti reikiai būdo kaip matuoti dokumentų panašumą. 
 
 \BigO{n^3}
@@ -296,6 +308,12 @@ Viena iš fundamentalių neprižiūrimo mokymosi problemų yra modelių testavim
 \section{Rezultatų vizuoalizacija}
 Dažnai norėdami geriau pažinti (ar testuoti) klasterizacijos rezultatus mes galime juo vizuolizuoti. Vizulaizacijos gali buti įvairios ir dažnai priklauso nuo algoritmo rūšies, bet dažniausiai naudojama \textbf{point cloud} vizualizacijos. Jose matosi pagal kokius parameturs (ašis) buvo klasterizuojama ir kaip atrodo sudaryti klasteriai.Taip pat galima pridėti papildomų indikatorių, priklausomų nuo algoritmo. Pavyzdžiui klasteriams sudarytiems k-means metodu galima nubraižyti atitinkamus „centrinius taškusn“.
 
+\section{Susijusios, aktuoalios problemos}
+\subsection{Keyword extraction}
+\subsection{Cluster labeling}
+\subsection{Document Classification}
+\subsection{Dimensionality reduction}
+Dimensionality reduction methods can be considered a subtype of soft clustering; for documents, these include latent semantic indexing (truncated singular value decomposition on term histograms) and topic models.
 \sectionnonum{Išvados}
 %Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų, suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 
