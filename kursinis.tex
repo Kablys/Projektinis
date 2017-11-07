@@ -1,9 +1,10 @@
-\documentclass[draft]{VUMIFInfKursinis}
+\documentclass{VUMIFInfKursinis}
 %\usepackage{algorithmicx}
 %\usepackage{algorithm}
 %\usepackage{algpseudocode}
 %\usepackage{amsfonts}
-\usepackage{amsmath}
+%\usepackage{amsmath} don't need becouse mathtools already inports
+\usepackage{mathtools}
 %\usepackage{bm}
 \usepackage{color}
 \usepackage{hyperref}  % Nuorodų aktyvavimas
@@ -57,8 +58,17 @@
 
 \tableofcontents
 
-%\sectionnonum{Sąvokų apibrėžimai}
+\sectionnonum{Sąvokų apibrėžimai}
 %Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
+\begin{itemize}
+	\item cluster
+	\item corpus
+	\item term
+	\item token
+	\item feature
+	\item online
+	\item ofline
+\end{itemize}
 
 \sectionnonum{Įvadas}
 %Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai. Darbo įvadas neturi būti dėstymo santrauka. Įvado apimtis 1–2 puslapiai.
@@ -150,16 +160,35 @@ Naudojant parengtas taisykles ir išimčių žodynus. Jeigu esamai kalbai ar sri
 Indexų pavyzdžiai: Wordnet, MeSH, taip pat yra daug statistinių metodų. Kartais prašoma vartotojų nurodyti kurią iš sinonimo reikšmių jie turėjo omeny arba vertinti paieškos rezultatus nurodant kurie atitinka o kurie ne, tokiu butu paieškos problema paversti į supervised learning problemą (relevance feedback).
 
 \subsection{Dokumento reprezentacija}
+Nors yra daugybė duomenų reprezentacijos/ (feature extraction) technikų, bet jeigu imanoma, geriausia naudoti tas kurios pritaikytos duomenų tipui\cite{alelyani2013feature}. Todėl čia paminėsiu tik su tekstiniais duomenimis susijusias reprezentacijas.
 Po Teksto apdorojimo žinsnių turimas tekstas vis dar nėra tinkamas klasterizavimui, mums dar reikia jį paversti į tinkamą duomenų struktūrą. Dėl didelio terminų kiekio (net po visų teksto apdorojimo žingsnių) klasterizuojant dokumentus iškyla našumo problemos. Naudojant iprastą matricos reprezentacija kiekvienas terminas būtu \textbf{feature} (eilutė), o dokumentas stulpelius. Šiame žinksnyje žodžiams yra priskiremi svoriai (pagal juo dalis žodžių yra pašalinama).
 \subsubsection{Term Weighting}
 Term weighting can be as simple as binary representation or as detailed as a mix of term and dataset existence probabilities stemmed from complex information theoretic underlying concepts. TF-IDF is the most widely known and used weighting method, and it is remain even comparable with novel methods. In TF-IDF terms weighting, the text documents are modeled as transactions.  Selecting the keyword for the feature selection process is the main preprocessing step necessary for the indexing of documents.
 \subsubsection{Terminų dažnis (TF)}
-\ltang{Terminų dažnis}{Term Frequency} vienas pirmųjų ir paprasčiausių (bet efektyvus) terminų metodas. Pirmą kartą pateiktas 1957\cite{luhn1957statistical}. Tekstų rinkinyje, dokuemtai kurie priklauso tai pačiai temai, labiau tikėtina, kad naudos panašius žodžius. Taigi dažni žodžiai bus geri tam tikrų temų indikatoriai. Galime teigti, kad dažnas žodis, tolygiai pasiskirstęs tarp temų nėra informativus. Taigi toks žodis būtu pašalinamas. Šia techniką vadiname „pruning high highly frequent terms“. Ta pati galim  atlikti su labai retai pasitaikančiais žodžiais, tai vadinama „pruning infrequent terms“.
+\toadd{išsiaišking ir papildyk iš wikipedijos skirtingi sverimo metodai ir formules}
+\ltang{Terminų dažnis}{Term Frequency} (toliau TF) vienas pirmųjų ir paprasčiausių (bet efektyvus) terminų metodas. Pirmą kartą pateiktas 1957\cite{luhn1957statistical}. Tekstų rinkinyje, dokuemtai kurie priklauso tai pačiai temai, labiau tikėtina, kad naudos panašius žodžius. Taigi dažni žodžiai bus geri tam tikrų temų indikatoriai. Galime teigti, kad dažnas žodis, tolygiai pasiskirstęs tarp temų nėra informativus. Taigi toks žodis būtu pašalinamas. Šia techniką vadiname „pruning high highly frequent terms“. Ta pati galim  atlikti su labai retai pasitaikančiais žodžiais, tai vadinama „pruning infrequent terms“.
 \rewrite{Ankstesne sesiją dėl stop words, galbūt linkinti į šia dali.} 
-\toadd{formule su paaiškinimu}
-\subsubsection{idf}
+$TF$ reikšmė terminui $f_i$ viso dokumentų rinkinio atžvilgiu yra gaunama pagal formulę:.
+\begin{equation}
+	TF(f_i)=\sum_{j\in D_{f_i}} t_{fi}
+\end{equation}
+$D_{fi}$ – dokumentai turintys terminą $f_i$\\ 
+$tf_{ij}$ – $f_i$ dažnis  dokumente $j$.
+
+\subsubsection{IDF}
+Nors TF yra efektyvus terminų parinkimo metodas, bet tai nera efektyvus paskirtant svorius terminams. Nes terminai su panašiais svoriais gali turėti drastiškai skirtingus paiskirstymus. Kaip pavizdys žodis dažnai pasitaikantis mažoje grupėje dokumentų (, kas galėtu padėti atskiriant šia grupę nuo viso dokumentų rinkinio,) ir žodis esantis daugumoje ar visuose dokumentuose (kas padaro ji bereikšmiu šios užduoties atžvilgiu), gali turėti identiškus svorius. Norint sureguliuoti terminų svorius, naudojam \ltang{atvirkštini dokumentų dažni}{inverse document frequency} (toliau IDF). IDF išmatuoja ar terminas yra dažnas ar retas tarp visų dokumentų.
+\begin{equation}
+	idf(f_i)=\log\frac{|D|}{|D_{f_i}|}
+\end{equation}
+$|D|$ – bendras dokumentų kiekis\\
+$|D_{f_i}|$  – kiek dokumentų turi terminą $f_i$\\
+IDF reikšmė bus didelė retiems terminams ir žema dažniems.
 \subsubsection{tf-idf}
-4. Computing term frequencies or \toadd{find about other forms} tf-idf After pre-processing the text data, we can then proceed to generate features. For document clustering, one of the most common ways to generate features for a document is to calculate the term frequencies of all its tokens. Although not perfect, these frequencies can usually provide some clues about the topic of the document. And sometimes it is also useful to weight the term frequencies by the inverse document frequencies. See tf-idf for detailed discussions.
+Mes galime sukombinuoti aukščiau minėtus metrikas \toadd{proper link}, kad gauti svorius kiekvienam terminui $f_i$ kiekviename dokumente $d_j$. Ši metrika yra vadinama TF-IDF\@. Ji yra gaunama naudojant:
+\begin{equation}
+	tf-idf(f_i,d_j) = tf_{ij} * idf (f_i)
+\end{equation}
+TF-IDF priskiria didesnę vertę terminams kurie dažnai pasirodo mažame grupėje dokumentų, todėl padeda atskiriant grupes. Reikšmė mažėja kai atitinkamas terminas pasirodo vis didesneme kiekyje dokumentų ir įgauna mažiausią reikšmę jei yra visuose dokumentuose. Terminai su aukščiausia TF-IDF reikšme turi daugiau šansų būti gerai suklasterizuoti. \toadd{kad sitas yra populiariausias metodas ir balansas tarp efektyvumo ir sudetingumo}
 \subsubsection{Chi Square statistic}
 \subsubsection{Frequent Term-Based Text Clustering}
 \subsubsection{Frequent Term Sequence}
