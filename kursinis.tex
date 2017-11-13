@@ -10,11 +10,14 @@
 \usepackage{hyperref}  % Nuorodų aktyvavimas
 %\usepackage{url}
 
+\newif\iffast{}
+%\fasttrue{}
+%\fastfalse{}
 %My personal additions
-	%\usepackage{xargs}
+\iffast{}
+
 	\usepackage[rgb,dvipsnames]{xcolor}
 	\usepackage[colorinlistoftodos,prependcaption,textsize=footnotesize]{todonotes} 
-	\usepackage{booktabs}
 
 	\addtolength{\oddsidemargin}{3cm}
 	\addtolength{\evensidemargin}{3cm}
@@ -22,6 +25,9 @@
 
 	\reversemarginpar{}
 	\setlength{\marginparwidth}{5.5cm} 
+\else
+\fi
+%\usepackage{booktabs}
 
 % Titulinio aprašas
 \university{Vilniaus universitetas}
@@ -41,22 +47,31 @@
 \bibliography{bibliografija} 
 
 \begin{document}
+
+\iffast{}
+true
+	\newcommand{\rewrite}[1]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red]{#1}}
+	\newcommand{\needsource}[1]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,]{#1}}
+	\newcommand{\toadd}[1]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,]{#1}}
+	\newcommand{\note}[1]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum]{#1}}
+	\newcommand{\thiswillnotshow}[1]{\todo[disable]{#1}}
+	\listoftodos[Notes]
+\else
+false
+	\newcommand{\rewrite}[1]{}
+	\newcommand{\needsource}[1]{}
+	\newcommand{\toadd}[1]{}
+	\newcommand{\note}[1]{}
+	\newcommand{\thiswillnotshow}[1]{}
+\fi
+
+\maketitle
+\tableofcontents
+
 %My macros
 
 \newcommand{\ltang}[2]{#1 (angl.\  \textit{#2}) }
 \newcommand{\BigO}[1]{$\mathcal{O}(#1)$}
-
-\newcommand{\rewrite}[1]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red]{#1}}
-\newcommand{\needsource}[1]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,]{#1}}
-\newcommand{\toadd}[1]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,]{#1}}
-\newcommand{\note}[1]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum]{#1}}
-\newcommand{\thiswillnotshow}[1]{\todo[disable]{#1}}
-
-\listoftodos[Notes]
-
-\maketitle
-
-\tableofcontents
 
 \sectionnonum{Sąvokų apibrėžimai}
 %Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
@@ -345,6 +360,7 @@ Dažnai norėdami geriau pažinti (ar testuoti) klasterizacijos rezultatus mes g
 Dimensionality reduction methods can be considered a subtype of soft clustering; for documents, these include latent semantic indexing (truncated singular value decomposition on term histograms) and topic models.
 \sectionnonum{Išvados}
 %Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų, suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
+
 
 \printbibliography[heading=bibintoc] % Literatūros šaltiniai aprašomi
 % bibliografija.bib faile. Šaltinių sąraše nurodoma panaudota literatūra,
