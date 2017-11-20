@@ -49,7 +49,6 @@
 \begin{document}
 
 \iffast{}
-true
 	\newcommand{\rewrite}[1]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red]{#1}}
 	\newcommand{\needsource}[1]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,]{#1}}
 	\newcommand{\toadd}[1]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,]{#1}}
@@ -57,7 +56,6 @@ true
 	\newcommand{\thiswillnotshow}[1]{\todo[disable]{#1}}
 	\listoftodos[Notes]
 \else
-false
 	\newcommand{\rewrite}[1]{}
 	\newcommand{\needsource}[1]{}
 	\newcommand{\toadd}[1]{}
@@ -78,11 +76,13 @@ false
 \begin{itemize}
 	\item cluster
 	\item corpus
-	\item term
+	\item term – termas dar vadinamas (tokens, words,terms or attributes)
 	\item token
 	\item feature
 	\item online
 	\item ofline
+	\item supervised
+	\item unsupervised
 \end{itemize}
 
 \sectionnonum{Įvadas}
@@ -205,8 +205,44 @@ Mes galime sukombinuoti aukščiau minėtus metrikas \toadd{proper link}, kad ga
 \end{equation}
 TF-IDF priskiria didesnę vertę terminams kurie dažnai pasirodo mažame grupėje dokumentų, todėl padeda atskiriant grupes. Reikšmė mažėja kai atitinkamas terminas pasirodo vis didesneme kiekyje dokumentų ir įgauna mažiausią reikšmę jei yra visuose dokumentuose. Terminai su aukščiausia TF-IDF reikšme turi daugiau šansų būti gerai suklasterizuoti. \toadd{kad sitas yra populiariausias metodas ir balansas tarp efektyvumo ir sudetingumo}
 \subsubsection{Chi Square statistic}
+\ltang{Chi kvadrato}{Chi Square} $\chi^2$ statistika yra plačiai naudojama prižiurimame mokymasi [72]. Ši statistika matuoja statistinę priklausomybę tarp \ltang{}{feature} ir klasės.$\chi^2$ su $r$ skirtingų reikšmių ir $C$ skirtingų klasių yra išreiškiamas:
+\begin{equation}
+	\chi^2=\sum _{i=1}^{r}{\sum _{j=1}^{C}{\frac {{(n_{ij}-\mu_{ij})}^{2}}{\mu_{i}}}}
+\end{equation} 
+$n_{ij}$ – \ltang{imties}{sample} dydis (dokumentų skaičius) with i th feature value in the j th class
+$μ ij = i∗ n ∗j$ ir $n$ – kiek iš vios yra dokumentų.
+Ši lygtis gali būti išreikšta kaip timybė:
+\begin{equation}
+	\chi^2(f,c)=\frac{n(p(f,c)p(\neg f, \neg c) - p(f,\neg c)p(\neg f, c))^2}{p(f)p(\neg f)p(\neg c)p(c)}
+\end{equation} 
+$p(f,c)$ – tikimybė, kad klasei $c$ priklauso termas $f$
+$p(\neg f,\neg c)$ – tikimybė, kad nepriklauso klasei $c$ ir neturi $f$ termo \toadd{kitos kombinacijos pagal šiuos 2 pvz turetu buti aiškios}
+Taigi $\chi^2$ negali būti tiesiogiai panaudota neprižiūrimame mokymesi, dėl klasių nebuvimo.\toadd{konkrečiau label nebuvimo} 
+Y. Li et al in [36] pasiūlė $\chi^2$ variaciją $r\chi^2$ kuri išsprendžia dali orginalaus $\chi^2$ trūkumų ir iterpė į Expectation-Maximization (EM)\note{išsiaiškink kas tai yra} algoritmą, kad būtu panaudota teksto klasterizacijos problemai. [36] atrado, kad $\chi^2$ negali nustatyti ar priklausomybė tarp \ltang{feature} ir klasės yra teigiama ar neigiama, kas kartais lembdavo, kad budavo ignuorojamos svarbios features ir parenkamos nesvarbios. Dėl to buvo pasiūlytas svarbumo(tinkamumo, aktuolumo) \ltang{matas}{measure}($R$) kuris gali būti naudojams orginaliame $\chi^2$, kad įveikti(apieti) šia apribojimą: Šis najas matas: 
+\begin{equation}
+	R(f,c)=\frac{p(f,c)p(\neg f, \neg c) - p(f,\neg c)p(\neg f, c)}{p(f)p(c)}
+\end{equation} 
+$R$ – reikšmė bus lygi 1 jeigu nėra jokios priklausomybės tarp klasės ir feature, daugiau nei 1 jeigu yra teigiama priklausomybė ir mažiau nei 1 jeigu yra neigiama priklausomybė.
+
+From Eqs (0.11) and (0.12), [36] proposed a new variation of χ 2 that is able to distinguish positive and negative relevance: \toadd{learn how to add labels in latex}
+\begin{equation}
+	r\chi^2(f)=\sum^{C}_{j=1}{p(R(f,c_j))\chi^2(f,c_j)}
+\end{equation} 
+$p(R(f,c_j))=\frac{R(f,c_j)}{\sum^{C}_{j=1}{R(f,c_j)}}$\\
+Didesnė $r\chi^2$ reikšmė, svarbesnė feature $f$ bus.
+\toadd{algoritmo aprašymas}
+As we mentioned earlier, we cannot apply a supervised feature selection in an unsuper- vised learning directly. Therefore, [36] embedded their proposed method given in Eq (0.13) in clustering algorithm using EM approach. They used k-means as clustering algorithm and rχ 2 as feature selection method as shown in Algorithm (5).
+One advantage of this framework that it does not simply remove the unselected features, instead, it keeps them while reducing their weight to α, so, they can be reselected in coming iterations. Also, this approach outperforms other clustering techniques even with the exis- tence of feature selection methods using F-measure and the purity. However, [36] did not investigate the convergence of Algorithm (5) which is a big concern for such an algorithm especially when we know that the selected features may change dramatically from iteration to another. In addition, the complexity of this algorithm is not discussed. In fact, the feature selection step in Algorithm (5) is not a feature selection, instead, it is a feature weighting. In other words, the number of features in each iteration remains the same. Thus, the complex- ity of k-means will not be reduced, which is against the goals of involving feature selection in clustering.
+Similar approach is proposed for Relief algorithm by Dash and Ong in [14]. They called their method Relief-C. It is observed that if clustering has done using the whole feature space, Relief will fail miserably in presence of large number of irrelevant features. Thus, Relief-C starts by clustering using randomly selected features, exactly 2 features, and using clusters as a class label passed to Relief. After that, the feature weight will be updated.  These two steps repeated until given criteria is met. We believe Relief-C may not perform well with huge dimensionality, say more than 1000, features, since the chance of finding the real clusters from two randomly chosen feature is very slim especially if we know that the percentage of relevant features is very small. In addition, both Relief-C and rχ 2 are capable of handling generic data. We include rχ 2 in the text data section since it was originally applied on text domain and it requires dataset to contain discrete values.
 \subsubsection{Frequent Term-Based Text Clustering}
+
+\begin{equation}
+	EO_i=\sum{D_j \in C_i}{-\frac{1}{F_j}*\ln(\frac{1}{F_j})}
+\end{equation} 
 \subsubsection{Frequent Term Sequence}
+\begin{equation}
+	J(C_i,C_j) = \frac{C_i \cup C_j}{}
+\end{equation} 
 \subsubsection{Vector Space Model}
 Sukuriame matrica kurios eilutės atitinka dokumentus,stulpeliai žodžius, o elementai žodžio dažnį dokumente.
 The dimensionality reduction techniques are SVD, Independent Component Analysis (ICA) and Principle component Analysis (PCA). 
