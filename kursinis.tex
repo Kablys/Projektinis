@@ -83,6 +83,7 @@
 	\item ofline
 	\item supervised
 	\item unsupervised
+	\item \ltang{matmenų redukcija}{dimensionality reduction}
 \end{itemize}
 
 \sectionnonum{Įvadas}
@@ -209,13 +210,13 @@ TF-IDF priskiria didesnę vertę terminams kurie dažnai pasirodo mažame grupė
 \begin{equation}
 	\chi^2=\sum _{i=1}^{r}{\sum _{j=1}^{C}{\frac {{(n_{ij}-\mu_{ij})}^{2}}{\mu_{i}}}}
 \end{equation} 
-$n_{ij}$ – \ltang{imties}{sample} dydis (dokumentų skaičius) with i th feature value in the j th class
+$n_{ij}$ – \ltang{imties}{sample} dydis (dokumentų skaičius) with i th feature value in the j th class.\\
 $μ ij = i∗ n ∗j$ ir $n$ – kiek iš vios yra dokumentų.
 Ši lygtis gali būti išreikšta kaip timybė:
 \begin{equation}
 	\chi^2(f,c)=\frac{n(p(f,c)p(\neg f, \neg c) - p(f,\neg c)p(\neg f, c))^2}{p(f)p(\neg f)p(\neg c)p(c)}
 \end{equation} 
-$p(f,c)$ – tikimybė, kad klasei $c$ priklauso termas $f$
+$p(f,c)$ – tikimybė, kad klasei $c$ priklauso termas $f$\\
 $p(\neg f,\neg c)$ – tikimybė, kad nepriklauso klasei $c$ ir neturi $f$ termo \toadd{kitos kombinacijos pagal šiuos 2 pvz turetu buti aiškios}
 Taigi $\chi^2$ negali būti tiesiogiai panaudota neprižiūrimame mokymesi, dėl klasių nebuvimo.\toadd{konkrečiau label nebuvimo} 
 Y. Li et al in [36] pasiūlė $\chi^2$ variaciją $r\chi^2$ kuri išsprendžia dali orginalaus $\chi^2$ trūkumų ir iterpė į Expectation-Maximization (EM)\note{išsiaiškink kas tai yra} algoritmą, kad būtu panaudota teksto klasterizacijos problemai. [36] atrado, kad $\chi^2$ negali nustatyti ar priklausomybė tarp \ltang{feature} ir klasės yra teigiama ar neigiama, kas kartais lembdavo, kad budavo ignuorojamos svarbios features ir parenkamos nesvarbios. Dėl to buvo pasiūlytas svarbumo(tinkamumo, aktuolumo) \ltang{matas}{measure}($R$) kuris gali būti naudojams orginaliame $\chi^2$, kad įveikti(apieti) šia apribojimą: Šis najas matas: 
@@ -230,19 +231,45 @@ From Eqs (0.11) and (0.12), [36] proposed a new variation of χ 2 that is able t
 \end{equation} 
 $p(R(f,c_j))=\frac{R(f,c_j)}{\sum^{C}_{j=1}{R(f,c_j)}}$\\
 Didesnė $r\chi^2$ reikšmė, svarbesnė feature $f$ bus.
-\toadd{algoritmo aprašymas}
-As we mentioned earlier, we cannot apply a supervised feature selection in an unsuper- vised learning directly. Therefore, [36] embedded their proposed method given in Eq (0.13) in clustering algorithm using EM approach. They used k-means as clustering algorithm and rχ 2 as feature selection method as shown in Algorithm (5).
-One advantage of this framework that it does not simply remove the unselected features, instead, it keeps them while reducing their weight to α, so, they can be reselected in coming iterations. Also, this approach outperforms other clustering techniques even with the exis- tence of feature selection methods using F-measure and the purity. However, [36] did not investigate the convergence of Algorithm (5) which is a big concern for such an algorithm especially when we know that the selected features may change dramatically from iteration to another. In addition, the complexity of this algorithm is not discussed. In fact, the feature selection step in Algorithm (5) is not a feature selection, instead, it is a feature weighting. In other words, the number of features in each iteration remains the same. Thus, the complex- ity of k-means will not be reduced, which is against the goals of involving feature selection in clustering.
-Similar approach is proposed for Relief algorithm by Dash and Ong in [14]. They called their method Relief-C. It is observed that if clustering has done using the whole feature space, Relief will fail miserably in presence of large number of irrelevant features. Thus, Relief-C starts by clustering using randomly selected features, exactly 2 features, and using clusters as a class label passed to Relief. After that, the feature weight will be updated.  These two steps repeated until given criteria is met. We believe Relief-C may not perform well with huge dimensionality, say more than 1000, features, since the chance of finding the real clusters from two randomly chosen feature is very slim especially if we know that the percentage of relevant features is very small. In addition, both Relief-C and rχ 2 are capable of handling generic data. We include rχ 2 in the text data section since it was originally applied on text domain and it requires dataset to contain discrete values.
-\subsubsection{Frequent Term-Based Text Clustering}
+\toadd{ar reikia algoritmo žingsnių aprašymo}
 
+
+
+As we mentioned earlier, we cannot apply a supervised feature selection in an unsuper- vised learning directly. Therefore, [36] embedded their proposed method given in Eq (0.13) in clustering algorithm using EM approach. They used k-means as clustering algorithm and rχ 2 as feature selection method as shown in Algorithm (5).
+
+Vienas iš šios sistemos privalumų tai, kad ji tiesiog nepašalina neatrinktų features, bet išlaiko jas sumažindama jų svori iki $\alpha$, kad jos galėtu buti perrinktos kitame žingsnyje. 
+
+One advantage of this framework that it does not simply remove the unselected features, instead, it keeps them while reducing their weight to α, so, they can be reselected in coming iterations. Also, this approach outperforms other clustering techniques even with the existence of feature selection methods using F-measure and the purity. However, [36] did not investigate the convergence of Algorithm (5) which is a big concern for such an algorithm especially when we know that the selected features may change dramatically from iteration to another. In addition, the complexity of this algorithm is not discussed. In fact, the feature selection step in Algorithm (5) is not a feature selection, instead, it is a feature weighting. In other words, the number of features in each iteration remains the same. Thus, the complex- ity of k-means will not be reduced, which is against the goals of involving feature selection in clustering.
+Similar approach is proposed for Relief algorithm by Dash and Ong in [14]. They called their method Relief-C. It is observed that if clustering has done using the whole feature space, Relief will fail miserably in presence of large number of irrelevant features. Thus, Relief-C starts by clustering using randomly selected features, exactly 2 features, and using clusters as a class label passed to Relief. After that, the feature weight will be updated.  These two steps repeated until given criteria is met. We believe Relief-C may not perform well with huge dimensionality, say more than 1000, features, since the chance of finding the real clusters from two randomly chosen feature is very slim especially if we know that the percentage of relevant features is very small. In addition, both Relief-C and rχ 2 are capable of handling generic data. We include rχ 2 in the text data section since it was originally applied on text domain and it requires dataset to contain discrete values.
+\subsubsection{FTC}
+\ltang{Dažnas termais paremtas teksto klasterizavimas}{Frequent Term-Based Text Clustering} (toliau FTC) pasiūlytas [8], suteikia naturalų būdą sumažinti matmenis.
+It follows the notion of frequent item set that forms the basis of association rule mining. In FTC, the set of documents that contains the same frequent term set will be a candidate cluster. Therefore, clusters may overlap since the document may contain different item sets. This kind of clustering can be either flat (FTC) or hierarchical (HFTC) clustering since we will have different cardinalities of item sets.
+Algorithm (6) explains the FTC algorithm. First, a dataset D, predetermined minimum support min sup value and an algorithm that find frequent item set should be available. The algorithm starts by finding the frequent item set with minimum support min sup . Then, it runs until the number of documents contributing in the selected term set |cov(ST S)| is equivalent to the number of documents in D. In each iteration, the algorithm calculates the entropy overlap EO for each set in the remaining term set RT S, where EO is given by:
 \begin{equation}
-	EO_i=\sum{D_j \in C_i}{-\frac{1}{F_j}*\ln(\frac{1}{F_j})}
+	EO_i=\sum_{D_j \in C_i}{-\frac{1}{F_j}\cdot\ln(\frac{1}{F_j})}
 \end{equation} 
+$D_j$ – j-tasis dokumentas.//
+$C_i$ – i-tasis klasteris.//
+$F_j$ – is the number of all frequent term set supported by document J.//
+The less overlap assumed to be the better. EO equals 0 if all the documents in C i support only on frequent item set (i.e. F j = 1). This value increases with the increase of F j . This method of overlap evaluation was found to produce better clustering quality than the standard one [8]. The best candidate set BestSet will be the set with minimum amount of overlap. BestSet will be selected and added to the ST S and excluded from RT S. In addition, the set of documents that support the BestSet are removed from the dataset since they have been already clustered, which lead to dramatically reduce the number of documents. They are also removed from the documents’ list of RT S which lead to reduce the number of remaining term set. This greedy approach gives the computational advantage for this algorithm.
+
+Due to the monotonicity property of frequent item set, which means all (k-1)-items that are subset of a frequent (k)-items are also frequent, we can perform a hierarchical frequent term-based clustering (HFTC). HFTC is based on Algorithm (6). Instead of performing FTC on the whole frequent term sets, it is performed on single level of frequent term set, say k-term sets. Then, the obtained clusters are further partitioned using the next level of term set, (k+1)-term sets.
+
+Both FTC and HFTC were imperially proven to be superior to other well-known clus- tering methods such as bisecting k-means and 9-secting k-means in efficiency and clustering quality. They also was able to provide better description and interpretation of the generated clusters by the selected term set.
+
 \subsubsection{Frequent Term Sequence}
+Similar to FTC, a clustering based on frequent term sequence (FTS) was proposed in [34]. Unlike FTC, the sequence of the terms matters in FTS. This means that the order of terms in the document is important. The frequent terms sequence, denoted as f , is a set that contains the frequent terms < f 1 , f 2 , . . . , f k >. The sequence here means that f 2 must be after f 1 , where it is not necessary to be immediately after it. There could be other non-frequent terms between them. This is true for any f k and f k−1 terms. This definition of frequent terms sequence is more adaptable to the variation of human languages [34].
+Similar to FTC, FTS starts by finding frequent term sets using an association rule mining algorithm. This frequent term set guarantees to contain the frequent term sequence but not vice versa. Hence, we do not need to search the whole term space for the frequent term sequence. We can only search in the frequent term set space, which is a dramatic dimension reduction. After that, FTS builds a generalized suffix tree (GST), which is a well-known data structure for sequence pattern matching, using the documents after removing the non- frequent terms. From the suffix nodes in GST, we obtain the cluster candidates. These cluster candidates may contain subtopics that may be eligible to be merged together to create more general topics. Therefore, a merging step takes place.
+The authors of [34] chose to merge cluster candidates into more general topic clusters using k − mismatch instead of the similarity. An example of using k − mismatch concept is when we have F S i = {f eature, selection, clustering} and F S j = {f eature, selection , classif ication}, they have one mismatch. Therefore, we can merge these two clusters if the tolerance parameter k ≥ 1. In [34], FTS adopted Landau−Vishkin (LV) to test three types of mismatches: insertion, deletion, substitution. Insertion means that all we need to insert is k, or less, terms into the F S j in order to match F S i . Deletion, in contrast, means we need to delete, instead. While substitution means we need to substitute terms from F S j by terms from F S i.
+These merged clusters are prone to overlap. Accordingly, more merging will be performed after measuring the amount of overlap using Jaccard Index.
 \begin{equation}
-	J(C_i,C_j) = \frac{C_i \cup C_j}{}
-\end{equation} 
+	J(C_i,C_j) = \frac{|C_i \cup C_j|}{|C_i \cap C_j|}
+\end{equation}
+The larger J(C i , C j ) is, the more overlap would be. The merge takes place here when the overlap exceeds a user defined threshold, δ. However, the final number of clusters could be predefined too. In this case, this merging step would be repeated until the number of clusters meet the user’s demand.
+In Algorithm (7), the most time consuming is constructing GST, yet, it is still linear with the number of terms. In [34], the terms reduction after finding the frequent term sets is huge, where it exceeds 90% in all cases.
+Similar to FTS, [34] proposed another frequent term set algorithm (FTMS) that is based on the synonymous set (synsets) of terms instead of the term itself. This is more adaptable with human language where we may use different terms to refer to the same meaning.  This proposed algorithm used WordNet dictionary to retrieve the synsets of each word and replace it with the original term. Each two synsets that intersect in at least one term will be merged into one synset. Thus, the number of synsets will be further reduced. Finally, FTS will be applied to these documents that contain the synsets.
+These two proposed algorithms (i.e. FTS and FTMS) were empirically proved to be superior to other algorithms, such as bisect k-means and hierarchical frequent item-based clustering. Yet, FTMS is more capable of capturing more precise clustering topics than FTS. This is due to using the terms synsets instead of just the word itself.
+There are several clustering techniques based on frequent item sets besides the ones mentioned in this chapter [20, 61, 77, 6, 48]. However, they all follow the same notion of reducing dimensionality by finding the frequent term sets. They differ in the parameters or the underlying utilized methods. For example, the number of terms in the frequent set may be set to a specific number or undefined. Hence, the maximum number will be found. They also differ in the way the final clustered is smoothed or merged.
 \subsubsection{Vector Space Model}
 Sukuriame matrica kurios eilutės atitinka dokumentus,stulpeliai žodžius, o elementai žodžio dažnį dokumente.
 The dimensionality reduction techniques are SVD, Independent Component Analysis (ICA) and Principle component Analysis (PCA). 
