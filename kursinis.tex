@@ -10,10 +10,9 @@
 \usepackage{hyperref}  % Nuorodų aktyvavimas
 %\usepackage{url}
 
-\newif\iffast{}
-%\fasttrue{}
-%\fastfalse{}
 %My personal additions
+\newif\iffast{} %degaults to false
+\fasttrue{}
 \iffast{}
 
 	\usepackage[rgb,dvipsnames]{xcolor}
@@ -214,15 +213,14 @@ $n_{ij}$ – \ltang{imties}{sample} dydis (dokumentų skaičius) with i th featu
 $μ ij = i∗ n ∗j$ ir $n$ – kiek iš vios yra dokumentų.
 Ši lygtis gali būti išreikšta kaip timybė:
 \begin{equation}
-	\chi^2(f,c)=\frac{n(p(f,c)p(\neg f, \neg c) - p(f,\neg c)p(\neg f, c))^2}{p(f)p(\neg f)p(\neg c)p(c)}
+	\chi^2(f,c)=\frac{n{(p(f,c)p(\neg f, \neg c) - p(f,\neg c)p(\neg f, c))}^2}{p(f)p(\neg f)p(\neg c)p(c)}
 \end{equation} 
 $p(f,c)$ – tikimybė, kad klasei $c$ priklauso termas $f$\\
 $p(\neg f,\neg c)$ – tikimybė, kad nepriklauso klasei $c$ ir neturi $f$ termo \toadd{kitos kombinacijos pagal šiuos 2 pvz turetu buti aiškios}
 Taigi $\chi^2$ negali būti tiesiogiai panaudota neprižiūrimame mokymesi, dėl klasių nebuvimo.\toadd{konkrečiau label nebuvimo} 
-Y. Li et al in [36] pasiūlė $\chi^2$ variaciją $r\chi^2$ kuri išsprendžia dali orginalaus $\chi^2$ trūkumų ir iterpė į Expectation-Maximization (EM)\note{išsiaiškink kas tai yra} algoritmą, kad būtu panaudota teksto klasterizacijos problemai. [36] atrado, kad $\chi^2$ negali nustatyti ar priklausomybė tarp \ltang{feature} ir klasės yra teigiama ar neigiama, kas kartais lembdavo, kad budavo ignuorojamos svarbios features ir parenkamos nesvarbios. Dėl to buvo pasiūlytas svarbumo(tinkamumo, aktuolumo) \ltang{matas}{measure}($R$) kuris gali būti naudojams orginaliame $\chi^2$, kad įveikti(apieti) šia apribojimą: Šis najas matas: 
+Y. Li et al in [36] pasiūlė $\chi^2$ variaciją $r\chi^2$ kuri išsprendžia dali orginalaus $\chi^2$ trūkumų ir iterpė į Expectation-Maximization (EM)\note{išsiaiškink kas tai yra} algoritmą, kad būtu panaudota teksto klasterizacijos problemai. [36] atrado, kad $\chi^2$ negali nustatyti ar priklausomybė tarp \ltang{feature} ir klasės yra teigiama ar neigiama, kas kartais lembdavo, kad budavo ignuorojamos svarbios features ir parenkamos nesvarbios. Dėl to buvo pasiūlytas svarbumo (tinkamumo, aktuolumo) \ltang{matas}{measure} ($R$) kuris gali būti naudojams orginaliame $\chi^2$, kad įveikti (apieti) šia apribojimą: Šis najas matas: 
 \begin{equation}
-	R(f,c)=\frac{p(f,c)p(\neg f, \neg c) - p(f,\neg c)p(\neg f, c)}{p(f)p(c)}
-\end{equation} 
+	R(f,c)=\frac{p(f,c)p(\neg f, \neg c) - p(f,\neg c)p(\neg f, c)}{p(f)p(c)} \end{equation} 
 $R$ – reikšmė bus lygi 1 jeigu nėra jokios priklausomybės tarp klasės ir feature, daugiau nei 1 jeigu yra teigiama priklausomybė ir mažiau nei 1 jeigu yra neigiama priklausomybė.
 
 From Eqs (0.11) and (0.12), [36] proposed a new variation of χ 2 that is able to distinguish positive and negative relevance: \toadd{learn how to add labels in latex}
@@ -244,31 +242,31 @@ Similar approach is proposed for Relief algorithm by Dash and Ong in [14]. They 
 \subsubsection{FTC}
 \ltang{Dažnas termais paremtas teksto klasterizavimas}{Frequent Term-Based Text Clustering} (toliau FTC) pasiūlytas [8], suteikia naturalų būdą sumažinti matmenis.
 It follows the notion of frequent item set that forms the basis of association rule mining. In FTC, the set of documents that contains the same frequent term set will be a candidate cluster. Therefore, clusters may overlap since the document may contain different item sets. This kind of clustering can be either flat (FTC) or hierarchical (HFTC) clustering since we will have different cardinalities of item sets.
-Algorithm (6) explains the FTC algorithm. First, a dataset D, predetermined minimum support min sup value and an algorithm that find frequent item set should be available. The algorithm starts by finding the frequent item set with minimum support min sup . Then, it runs until the number of documents contributing in the selected term set |cov(ST S)| is equivalent to the number of documents in D. In each iteration, the algorithm calculates the entropy overlap EO for each set in the remaining term set RT S, where EO is given by:
+Algorithm (6) explains the FTC algorithm. First, a dataset D, predetermined minimum support min sup value and an algorithm that find frequent item set should be available. The algorithm starts by finding the frequent item set with minimum support min sup. Then, it runs until the number of documents contributing in the selected term set |cov (ST S)| is equivalent to the number of documents in D. In each iteration, the algorithm calculates the entropy overlap EO for each set in the remaining term set RT S, where EO is given by:
 \begin{equation}
 	EO_i=\sum_{D_j \in C_i}{-\frac{1}{F_j}\cdot\ln(\frac{1}{F_j})}
 \end{equation} 
-$D_j$ – j-tasis dokumentas.//
-$C_i$ – i-tasis klasteris.//
-$F_j$ – is the number of all frequent term set supported by document J.//
-The less overlap assumed to be the better. EO equals 0 if all the documents in C i support only on frequent item set (i.e. F j = 1). This value increases with the increase of F j . This method of overlap evaluation was found to produce better clustering quality than the standard one [8]. The best candidate set BestSet will be the set with minimum amount of overlap. BestSet will be selected and added to the ST S and excluded from RT S. In addition, the set of documents that support the BestSet are removed from the dataset since they have been already clustered, which lead to dramatically reduce the number of documents. They are also removed from the documents’ list of RT S which lead to reduce the number of remaining term set. This greedy approach gives the computational advantage for this algorithm.
+$D_j$ – j-tasis dokumentas.\\
+$C_i$ – i-tasis klasteris.\\
+$F_j$ – is the number of all frequent term set supported by document J.\\
+The less overlap assumed to be the better. EO equals 0 if all the documents in C i support only on frequent item set (i.e. F j = 1). This value increases with the increase of F j. This method of overlap evaluation was found to produce better clustering quality than the standard one [8]. The best candidate set BestSet will be the set with minimum amount of overlap. BestSet will be selected and added to the ST S and excluded from RT S. In addition, the set of documents that support the BestSet are removed from the dataset since they have been already clustered, which lead to dramatically reduce the number of documents. They are also removed from the documents’ list of RT S which lead to reduce the number of remaining term set. This greedy approach gives the computational advantage for this algorithm.
 
 Due to the monotonicity property of frequent item set, which means all (k-1)-items that are subset of a frequent (k)-items are also frequent, we can perform a hierarchical frequent term-based clustering (HFTC). HFTC is based on Algorithm (6). Instead of performing FTC on the whole frequent term sets, it is performed on single level of frequent term set, say k-term sets. Then, the obtained clusters are further partitioned using the next level of term set, (k+1)-term sets.
 
 Both FTC and HFTC were imperially proven to be superior to other well-known clus- tering methods such as bisecting k-means and 9-secting k-means in efficiency and clustering quality. They also was able to provide better description and interpretation of the generated clusters by the selected term set.
 
 \subsubsection{Frequent Term Sequence}
-Similar to FTC, a clustering based on frequent term sequence (FTS) was proposed in [34]. Unlike FTC, the sequence of the terms matters in FTS. This means that the order of terms in the document is important. The frequent terms sequence, denoted as f , is a set that contains the frequent terms < f 1 , f 2 , . . . , f k >. The sequence here means that f 2 must be after f 1 , where it is not necessary to be immediately after it. There could be other non-frequent terms between them. This is true for any f k and f k−1 terms. This definition of frequent terms sequence is more adaptable to the variation of human languages [34].
+Similar to FTC, a clustering based on frequent term sequence (FTS) was proposed in [34]. Unlike FTC, the sequence of the terms matters in FTS\. This means that the order of terms in the document is important. The frequent terms sequence, denoted as f, is a set that contains the frequent terms < f 1, f 2, \ldots, f k >. The sequence here means that f 2 must be after f 1, where it is not necessary to be immediately after it. There could be other non-frequent terms between them. This is true for any f k and f k−1 terms. This definition of frequent terms sequence is more adaptable to the variation of human languages [34].
 Similar to FTC, FTS starts by finding frequent term sets using an association rule mining algorithm. This frequent term set guarantees to contain the frequent term sequence but not vice versa. Hence, we do not need to search the whole term space for the frequent term sequence. We can only search in the frequent term set space, which is a dramatic dimension reduction. After that, FTS builds a generalized suffix tree (GST), which is a well-known data structure for sequence pattern matching, using the documents after removing the non- frequent terms. From the suffix nodes in GST, we obtain the cluster candidates. These cluster candidates may contain subtopics that may be eligible to be merged together to create more general topics. Therefore, a merging step takes place.
-The authors of [34] chose to merge cluster candidates into more general topic clusters using k − mismatch instead of the similarity. An example of using k − mismatch concept is when we have F S i = {f eature, selection, clustering} and F S j = {f eature, selection , classif ication}, they have one mismatch. Therefore, we can merge these two clusters if the tolerance parameter k ≥ 1. In [34], FTS adopted Landau−Vishkin (LV) to test three types of mismatches: insertion, deletion, substitution. Insertion means that all we need to insert is k, or less, terms into the F S j in order to match F S i . Deletion, in contrast, means we need to delete, instead. While substitution means we need to substitute terms from F S j by terms from F S i.
+The authors of [34] chose to merge cluster candidates into more general topic clusters using k − mismatch instead of the similarity. An example of using k − mismatch concept is when we have F S i = {f eature, selection, clustering} and F S j = {f eature, selection, classif ication}, they have one mismatch. Therefore, we can merge these two clusters if the tolerance parameter k ≥ 1. In [34], FTS adopted Landau−Vishkin (LV) to test three types of mismatches: insertion, deletion, substitution. Insertion means that all we need to insert is k, or less, terms into the F S j in order to match F S i. Deletion, in contrast, means we need to delete, instead. While substitution means we need to substitute terms from F S j by terms from F S i.
 These merged clusters are prone to overlap. Accordingly, more merging will be performed after measuring the amount of overlap using Jaccard Index.
 \begin{equation}
 	J(C_i,C_j) = \frac{|C_i \cup C_j|}{|C_i \cap C_j|}
 \end{equation}
-The larger J(C i , C j ) is, the more overlap would be. The merge takes place here when the overlap exceeds a user defined threshold, δ. However, the final number of clusters could be predefined too. In this case, this merging step would be repeated until the number of clusters meet the user’s demand.
+The larger J (C i, C j) is, the more overlap would be. The merge takes place here when the overlap exceeds a user defined threshold, δ. However, the final number of clusters could be predefined too. In this case, this merging step would be repeated until the number of clusters meet the user’s demand.
 In Algorithm (7), the most time consuming is constructing GST, yet, it is still linear with the number of terms. In [34], the terms reduction after finding the frequent term sets is huge, where it exceeds 90% in all cases.
 Similar to FTS, [34] proposed another frequent term set algorithm (FTMS) that is based on the synonymous set (synsets) of terms instead of the term itself. This is more adaptable with human language where we may use different terms to refer to the same meaning.  This proposed algorithm used WordNet dictionary to retrieve the synsets of each word and replace it with the original term. Each two synsets that intersect in at least one term will be merged into one synset. Thus, the number of synsets will be further reduced. Finally, FTS will be applied to these documents that contain the synsets.
-These two proposed algorithms (i.e. FTS and FTMS) were empirically proved to be superior to other algorithms, such as bisect k-means and hierarchical frequent item-based clustering. Yet, FTMS is more capable of capturing more precise clustering topics than FTS. This is due to using the terms synsets instead of just the word itself.
+These two proposed algorithms (i.e. FTS and FTMS) were empirically proved to be superior to other algorithms, such as bisect k-means and hierarchical frequent item-based clustering. Yet, FTMS is more capable of capturing more precise clustering topics than FTS\. This is due to using the terms synsets instead of just the word itself.
 There are several clustering techniques based on frequent item sets besides the ones mentioned in this chapter [20, 61, 77, 6, 48]. However, they all follow the same notion of reducing dimensionality by finding the frequent term sets. They differ in the parameters or the underlying utilized methods. For example, the number of terms in the frequent set may be set to a specific number or undefined. Hence, the maximum number will be found. They also differ in the way the final clustered is smoothed or merged.
 \subsubsection{Vector Space Model}
 Sukuriame matrica kurios eilutės atitinka dokumentus,stulpeliai žodžius, o elementai žodžio dažnį dokumente.
@@ -289,8 +287,57 @@ Klasterizacijos algoritmai gali padėti atsakyti į klausimus:
 	\item Ar sub-populiacijos yra vientisos ar jas galima papildomai išskaldyti
 \end{itemize}
 Kaip ir dalis kitų neprižiūrimo mokymosi metodų klasterizavimas gali būti panaudojmas dimenisjų sumažinimui. 
+
+
 \subsection{Elementų panašumo, atstumo nustatymas}
 \toadd{Remove redundent, add description, uses, formulas and graphs}Atstumai
+
+Nors turime Dokumento klusterio apibrėžimą\toadd{patikrink ar ištikruju eina prieš, prdek label i ten}, bet visdar neaišku kaip apibrėžti kiek panaši ar skirktinga yra pora dokumentų. Realybėje šis apibrėžimas keičiasi prikalusant nuo probleminės srities. Pavyzdžiui klasterizuojant mokslinius darbus du dokumentai laikomi panašiais jei jų temos sutampa. Tuo tarpu naudojant klasterizaciją internetėm svetainėm, dažniausiai aktuolu klastrizuoti atskirus puslapius (straipsnius) pagal jų turinį.
+For instance, when dealing with universities’ web sites, we may want to separate professors’ home pages from students’ home pages, and pages for courses from pages for research projects. This kind of clustering can benefit further analysis and utilize of the dataset such as information retrieval and information extraction, by grouping similar types of information sources together.
+
+Taigi tiksliam klasterizavimui reikalingas tikslus „artumo“ tarps obijektų apibrėžimas, tai galima pasiekti arba porų panašumo arba atstumo metrikomis. Dokybė sprendimų buvo pasiūlyta ir pritaikyta sprendžiant šia problemą, čia pateiksiu keleta naudojamų tekstiniems dokumentams.
+A variety of similarity or distance measures have been proposed and widely applied, such as cosine similarity and the Jaccard correlation coefficient.  Meanwhile, similarity is often conceived in terms of dissim- ilarity or distance as well [15]. Measures such as Euclidean distance and relative entropy have been applied in clustering to calculate the pair-wise distances.
+
+\subsubsection{Metrikos}
+Not every distance measure is a metric. To qualify as a met- ric, a measure d must satisfy the following four conditions.  Let x and y be any two objects in a set and d (x, y) be the distance between x and y.
+\begin{itemize}
+	\item The distance between any two points must be non- negative, that is, d (x, y) ≥ \item
+	\item The distance between two objects must be zero if and only if the two objects are identical, that is, d (x, y) = 0 if and only if x = y.
+	\item Distance must be symmetric, that is, distance from x to y is the same as the distance from y to x, ie.\  d (x, y) = d (y, x).
+	\item The measure must satisfy the triangle inequality, which is d (x, z) ≤ d (x, y) + d (y, z).
+\end{itemize}
+\subsubsection{Euclidean Distance}
+Euclidean distance is a standard metric for geometrical prob- lems. It is the ordinary distance between two points and can be easily measured with a ruler in two- or three-dimensional space. Euclidean distance is widely used in clustering prob- lems, including clustering text. It satisfies all the above four conditions and therefore is a true metric. It is also the de- fault distance measure used with the K-means algorithm.
+Measuring distance between text documents, given two doc- − → uments d a and d b represented by their term vectors t a and − → t b respectively, the Euclidean distance of the two documents is defined as
+\toadd{formule}
+where the term set is T = {t 1,\ldots,t m }. As mentioned previously, we use the tf idf value as term weights, that is w t,a = tf idf (d a, t).
+\subsubsection{Cosine Similarity}
+When documents are represented as term vectors, the sim- ilarity of two documents corresponds to the correlation be- tween the vectors. This is quantified as the cosine of the angle between vectors, that is, the so-called cosine similar- ity. Cosine similarity is one of the most popular similarity measure applied to text documents, such as in numerous in- formation retrieval applications [21] and clustering too [9].
+Given two documents t a and t b, their cosine similarity is
+\toadd{formule}
+where t a and t b are m-dimensional vectors over the term set T = {t 1,\ldots, t m }. Each dimension represents a term with its weight in the document, which is non-negative. As a result, the cosine similarity is non-negative and bounded between [0,1].
+An important property of the cosine similarity is its inde- pendence of document length. For example, combining two identical copies of a document d to get a new pseudo docu- ment d 0, the cosine similarity between d and d 0 is 1, which means that these two documents are regarded to be iden- tical. Meanwhile, given another document l, d and d 0 will have the same similarity value to l, that is, sim (t d, t l) = sim (t d 0, t l). In other words, documents with the same com- position but different totals will be treated identically. Strictly speaking, this does not satisfy the second condition of a met- ric, because after all the combination of two copies is a differ- ent object from the original document. However, in practice, when the term vectors are normalized to a unit length such as 1, and in this case the representation of d and d 0 is the same.
+\subsubsection{Jaccard Coefficient}
+The Jaccard coefficient, which is sometimes referred to as the Tanimoto coefficient, measures similarity as the intersection
+divided by the union of the objects. For text document, the Jaccard coefficient compares the sum weight of shared terms to the sum weight of terms that are present in either of the two document but are not the shared terms. The formal definition is:
+\toadd{formule}
+The Jaccard coefficient is a similarity measure and ranges between 0 and 1. It is 1 when the t a = t b and 0 when t a and t b are disjoint, where 1 means the two objects are the same and 0 means they are completely different. The corresponding distance measure is D J = 1 − SIM J and we will use D J instead in subsequent experiments.
+
+\subsubsection{Pearson Correlation Coefficient}
+Pearson’s correlation coefficient is another measure of the extent to which two vectors are related. There are different forms of the Pearson correlation coefficient formula. Given the term set T = {t 1,\ldots,t m }, a commonly used form is
+\toadd{formule}
+This is also a similarity measure. However, unlike the other measures, it ranges from +1 to −1 and it is 1 when t a = t b. In subsequent experiments we use the corresponding distance measure, which is D P = 1−SIM P when SIM P ≥ 0 and D P = |SIM P | when SIM P < 0.
+\subsubsection{Averaged Kullback-Leibler Divergence}
+In information theory based clustering, a document is con- sidered as a probability distribution of terms. The similarity of two documents is measured as the distance between the two corresponding probability distributions. The Kullback- Leibler divergence (KL divergence), also called the relative entropy, is a widely applied measure for evaluating the dif- ferences between two probability distributions.  
+Given two distributions P and Q, the KL divergence from distribution P to distribution Q is defined as
+\toadd{formule}
+In the document scenario, the divergence between two dis-
+tribution of words is:
+\toadd{formule}
+However, unlike the previous measures, the KL divergence is not symmetric, ie. D KL (P kQ) 6 = D KL (QkP). Therefore it is not a true metric. As a result, we use the averaged KL divergence instead, which is defined as
+\toadd{formule}
+The average weighting between two vectors ensures symme- try, that is, the divergence from document i to document j is the same as the divergence from document j to document i. The averaged KL divergence has recently been applied to clustering text documents, such as in the family of the Information Bottleneck clustering algorithms [18], to good effect.
+\subsubsection{Kiti}
 \begin{itemize}
 	\item Manheteno
 	\item Euklido
@@ -301,6 +348,8 @@ Kaip ir dalis kitų neprižiūrimo mokymosi metodų klasterizavimas gali būti p
 	\item Žakardo atstumas 
 	\item Daiso atstumas 
 \end{itemize}
+
+
 \subsection{Algoritmų rūšys}
 \note{Kita skistymo versija}
 Duomenų klasterizavimo algroritmai bendrai gali būti suskirstyti į\cite{kadhim2014text}: 
@@ -406,6 +455,7 @@ Latent Dirichlet allocation (toliau LDA, nesumaišyti su Linear discriminant ana
 Todėl LDA gražina ne sugrupuotus duomenis, o pasiskirstymą kiek kokių temų turi kiekvienas dokumentas  
 
 \section{Algoritmų testavimas/Kokybės vertinimas}
+\toadd{purity & entropy}
 Viena iš fundamentalių neprižiūrimo mokymosi problemų yra modelių testavimas. Skirtingai nei „prižurimame mokymasi“ kur svarbu atdidėti dali duomenų su kuriais nėra mokomasi o tik testuojama sugeneruoti modeliai, „neprižiurimame mokymasi“ mes to nelgalim atlikti\ldots Bet egzsituoja keltatas metodu kaip galima patikrinti sudarytus klasterius.
 \begin{itemize}
 	\item Pirma galima sugeneruotus klasterius leisti tikrinti \textbf{žmonėms }. Tam yra keli būdai. Galima tiesiog duoti sugeneruotus klasterius ir bandyti nuspresti ar jie tinkami. Taipat galima parainkti du atsitiktinius dokumentus ir spėti ar jie turėtu būti viename ar atskiruose klasteriuose, ir tada palyginti su kompiuterio sugeneruotu rezultatu. 
